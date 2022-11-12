@@ -16,6 +16,8 @@ const customerRoute = require("./routes/customer");
 const coachRoute = require("./routes/coach");
 const subscriptionRoute = require("./routes/subcription");
 const slotRoute = require("./routes/slot");
+const loginRoute = require("./routes/login");
+const registerRoute = require("./routes/register");
 
 app.use(express.json());
 app.use(getRoleMiddleware);
@@ -25,6 +27,8 @@ customerRoute(app);
 coachRoute(app);
 subscriptionRoute(app);
 slotRoute(app);
+loginRoute(app);
+registerRoute(app);
 
 app.get("/", (req, res) => {
   res.render("index.ejs", {

@@ -77,11 +77,11 @@ async function userUpdate(req, res) {
 
 async function userLogin(req, res) {
   try {
-    if (!req.body._id || !req.body.password) {
-      return res.json("_id or password missing");
+    if (!req.body.login || !req.body.password) {
+      return res.json("login or password missing");
     }
     const User = req.app.get("models").User;
-    const UserToVerify = await User.findById(req.body._id);
+    const UserToVerify = await User.findOne({ login: req.body.login });
     if (!UserToVerify) {
       return res.json("No user found");
     }

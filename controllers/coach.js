@@ -74,7 +74,6 @@ async function coachUpdate(req, res) {
   }
 }
 
-// TODO: check booking
 async function coachDelete(req, res) {
   if (req.role !== "manager") {
     return res.json("unauthorized");
