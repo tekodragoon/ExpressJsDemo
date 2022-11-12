@@ -25,6 +25,10 @@ coachRoute(app);
 subscriptionRoute(app);
 slotRoute(app);
 
+app.get("/", (req, res) => {
+  res.render("index.ejs");
+});
+
 app.listen(3000, () => {
   console.log("Server successfully launched");
 });
