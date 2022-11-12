@@ -9,6 +9,7 @@ mongoose.connect("mongodb://localhost/sportCenters");
 const app = express();
 
 app.set("models", models);
+app.set("view-engine", "ejs");
 
 const userRoute = require("./routes/user");
 const customerRoute = require("./routes/customer");
@@ -26,7 +27,9 @@ subscriptionRoute(app);
 slotRoute(app);
 
 app.get("/", (req, res) => {
-  res.render("index.ejs");
+  res.render("index.ejs", {
+    name: 'Fred'
+  });
 });
 
 app.listen(3000, () => {
