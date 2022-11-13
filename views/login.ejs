@@ -2,6 +2,7 @@
 <html lang="en">
 <%- include("_head", {documentTitle: "login" }); %>
 <body>
+<%- include("_nav"); %>
 
 <% if (locals.errorMessage) { %>
   <div class="error"> <%= errorMessage %> </div>

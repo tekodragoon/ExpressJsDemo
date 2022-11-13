@@ -9,6 +9,8 @@ h1 {
   color: hsl(240, 100%, 15%);
 }
 
+/* FOMRULAIRE */
+
 fieldset {
   border: 1px solid lightgray;
   border-radius: 5px;
@@ -62,4 +64,19 @@ form input {
 
 .error {
   color: red;
+}
+
+/* NAVBAR */
+
+nav {
+  display: flex;
+  justify-content: space-between;
+  background-color: hsl(0, 0%, 15%);
+  padding: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+nav a {
+  color: whitesmoke;
+  text-decoration: none;
 }
