@@ -1,7 +1,11 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include("_head", {documentTitle: "register"}); %>
+<body>
 <h1>Register</h1>
 
 <% if (locals.errorMessage) { %>
-  <div> <%= errorMessage %> </div>
+  <div class="error"> <%= errorMessage %> </div>
 <% } %>
 
 <form action="/register" method="post">
@@ -24,10 +28,14 @@
       <input type="text" id="password" name="password">
     </div>
   </fieldset>
-  <button type="submit">Register</button>
+  <button class="btn" type="submit">Register</button>
+  <div class="opposite">
+    Already register ?<br>
+    <a class="btn" href="/login">Login</a>
+  </div>
 </form>
 
-<div>
-  Already register ?<br>
-  <a href="/login">Login</a>
-</div>
+
+
+</body>
+</html>

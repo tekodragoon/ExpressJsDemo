@@ -1,0 +1,65 @@
+body {
+  background-color: hsl(0, 0%, 95%);
+}
+
+h1 {
+  width: fit-content;
+  margin: auto;
+  margin-bottom: 2rem;
+  color: hsl(240, 100%, 15%);
+}
+
+fieldset {
+  border: 1px solid lightgray;
+  border-radius: 5px;
+  background-color: hsla(240, 100%, 95%, 0.25);
+  padding: 1rem;
+}
+
+legend {
+  font-style: italic;
+  font-size: 0.8em;
+}
+
+form {
+  width: fit-content;
+  margin: auto;
+  border: 2px solid hsl(240, 70%, 5%);
+  padding: 10px;
+  border-radius: 10px;
+  box-shadow: 1px 2px 5px hsl(0, 0%, 25%);
+}
+
+form label {
+  display: block;
+  font-size: 0.9rem;
+  font-weight: bold;
+  margin-bottom: 2px;
+}
+
+form input {
+  margin-bottom: 15px;
+  min-width: 50vw;
+}
+
+.opposite {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  font-size: 0.9rem;
+}
+
+.btn {
+  background-color: hsl(0, 0%, 25%);
+  color: whitesmoke;
+  padding: 0.2rem 1rem;
+  border: hsl(0, 0%, 15%);
+  border-radius: 0.5rem;
+  border-width: 2px;
+  text-decoration: none;
+  margin: 0.5rem;
+}
+
+.error {
+  color: red;
+}
