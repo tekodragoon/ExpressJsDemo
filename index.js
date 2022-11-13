@@ -22,6 +22,9 @@ const registerRoute = require("./routes/register");
 app.use(express.json());
 app.use(getRoleMiddleware);
 app.use(express.static(__dirname + "/public"));
+app.use(express.urlencoded({
+  extended: true
+}));
 
 userRoute(app);
 customerRoute(app);
