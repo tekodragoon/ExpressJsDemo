@@ -6,13 +6,12 @@
 
 <h1>Register</h1>
 
-<% if (locals.errorMessage) { %>
-  <div class="error"> <%= errorMessage %> </div>
-<% } %>
-
-<form action="/register" method="post">
+<form class="login-form" action="/register" method="post">
   <fieldset>
     <legend>Register information</legend>
+    <% if (locals.errorMessage) { %>
+      <div class="error"> <%= errorMessage %> </div>
+    <% } %>
     <div>
       <label for="lastName">LastName</label>
       <input type="text" id="lastName" name="lastName">

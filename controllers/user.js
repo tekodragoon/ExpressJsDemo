@@ -1,5 +1,4 @@
 const encryptPassword = require("../utils/encryptPassword");
-const decryptPassword = require("../utils/decryptPassword");
 
 async function userGet(req, res) {
   try {
@@ -75,20 +74,4 @@ async function userUpdate(req, res) {
   }
 }
 
-async function userLogin(req, res) {
-  try {
-    if (!req.body.login || !req.body.password) {
-      return res.json("login or password missing");
-    }
-    const User = req.app.get("models").User;
-    const UserToVerify = await User.findOne({ login: req.body.login });
-    if (!UserToVerify) {
-      return res.json("No user found");
-    }
-    return res.json(decryptPassword(UserToVerify, req.body.password));
-  } catch (error) {
-    return res.json(error.message);
-  }
-}
-
-module.exports = { userGet, userCreate, userDelete, userUpdate, userLogin };
+module.exports = { userGet, userCreate, userDelete, userUpdate };

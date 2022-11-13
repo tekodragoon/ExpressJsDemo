@@ -37,6 +37,8 @@ async function registerPost(req, res) {
       return res.redirect("/register?" + query);
     }
 
+    //todo: gestion utilisateur unique
+
     const {token, salt, hash} = encryptPassword(req.body.password);
 
     const User = req.app.get("models").User;
@@ -48,6 +50,7 @@ async function registerPost(req, res) {
       salt,
       hash,
       dateOfBirth: req.body.dateOfBirth,
+      login: req.body.login,
     }).save();
     return res.redirect("/login");
   } catch (error) {

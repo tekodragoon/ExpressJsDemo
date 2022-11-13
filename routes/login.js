@@ -1,4 +1,4 @@
-const loginGet = require("../controllers/login");
+const { loginGet } = require("../controllers/login");
 
 function loginRoute(app) {
   app.get("/login", loginGet);

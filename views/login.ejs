@@ -4,22 +4,21 @@
 <body>
 <%- include("_nav"); %>
 
-<% if (locals.errorMessage) { %>
-  <div class="error"> <%= errorMessage %> </div>
-<% } %>
-
 <h1>Login</h1>
 
-<form action="/userLogin" method="post">
+<form class="login-form" action="/login" method="post">
   <fieldset>
     <legend>Login information</legend>
+    <% if (messages.error) { %>
+      <div class="error"> <%= messages.error %> </div>
+    <% } %>
     <div>
       <label for="login">Login Name</label>
-      <input type="text" id="login" name="login" required>
+      <input type="text" id="login" name="login">
     </div>
     <div>
       <label for="password">Password</label>
-      <input type="text" id="password" name="password" required>
+      <input type="text" id="password" name="password">
     </div>
   </fieldset>
   <button class="btn" type="submit">Login</button>

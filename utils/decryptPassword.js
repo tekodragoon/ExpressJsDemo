@@ -8,7 +8,7 @@ function decryptPassword({salt, hash, token}, password) {
     return token;
   }
 
-  return "Invalid Password";
+  return false;
 }
 
 module.exports = decryptPassword;
