@@ -50,7 +50,7 @@ async function registerPost(req, res) {
       token,
       salt,
       hash,
-      dateOfBirth: new Date(),
+      birthdate: new Date(),
       login: req.body.login,
     }).save();
     return res.redirect("/login");

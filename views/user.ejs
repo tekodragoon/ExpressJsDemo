@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+  <%- include("_head", {documentTitle: "Users List" }); %>
+<body>
+  <%- include("_nav", {currentUser: locals.user}); %>
+  <% include("_formatDate") %>
+  <h1>User</h1>
+  <form class="util-form" action="/userUpdate" method="post">
+    <fieldset>
+      <legend>user information</legend>
+      <% if (messages.error) { %>
+        <div class="error"> <%= messages.error %> </div>
+      <% } %>
+      <input type="hidden" name="_id" value="<%= myUser._id %>">
+      <div>
+        <label for="lastName">Lastname</label>
+        <input type="text" id="lastName" name="lastName" value="<%= myUser.lastName %>">
+      </div>
+      <div>
+        <label for="firstName">Firstname</label>
+        <input type="text" id="firstName" name="firstName" value="<%= myUser.firstName %>">
+      </div>
+      <div>
+        <label for="birthdate">Birthdate</label>
+        <input type="date" id="birthdate" name="birthdate" value="<%= formatInputDate(myUser.birthdate) %>">
+      </div>
+      <div>
+        <label for="role">Firstname</label>
+        <select id="role" name="role">
+          <option value="manager" <% if (myUser.role === "manager")  { %> selected <% } %> >
+            Manager</option>
+          <option value="coach" <% if (myUser.role === "coach")  { %> selected <% } %>>
+            Coach</option>
+          <option value="customer" <% if (myUser.role === "customer")  { %> selected <% } %>>
+            Customer</option>
+        </select>
+      </div>
+    </fieldset>
+    <button class="btn" type="submit">Save</button>
+  </form>
+</body>
+</html>

@@ -66,6 +66,14 @@ legend {
   color: red;
 }
 
+.info {
+  color: green;
+  font-size: 1.1rem;
+  width: fit-content;
+  margin: auto;
+  margin-bottom: 0.5rem;
+}
+
 /* NAVBAR */
 
 .nav-bar {

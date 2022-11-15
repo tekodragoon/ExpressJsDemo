@@ -4,12 +4,15 @@
 <body>
   <%- include("_nav", {currentUser: locals.user}); %>
   <h1>Users List</h1>
+  <% if (messages.info) { %>
+    <div class="info"> <%= messages.info %> </div>
+  <% } %>
   <table class="list-table">
     <thead>
       <tr class="list-table-head">
-        <th class="list-table-head-item">LastName</th>
-        <th class="list-table-head-item">FirstName</th>
-        <th class="list-table-head-item">Date of birth</th>
+        <th class="list-table-head-item">Lastname</th>
+        <th class="list-table-head-item">Firstname</th>
+        <th class="list-table-head-item">Birthdate</th>
         <th class="list-table-head-item">Role</th>
         <th class="list-table-head-item">Actions</th>
       </tr>
@@ -20,10 +23,10 @@
         <tr>
           <td class="list-table-body-item"><%= user.lastName %> </td>
           <td class="list-table-body-item"><%= user.firstName %> </td>
-          <td class="list-table-body-item"><%= formatDate(user.dateOfBirth) %> </td>
+          <td class="list-table-body-item"><%= formatDate(user.birthdate) %> </td>
           <td class="list-table-body-item"><%= user.role %> </td>
           <td class="list-table-body-item">
-            <a class="btn" href="/updateUser">Edit</a></td>
+            <a class="btn" href="/user?id=<%= user.id %>">Edit</a></td>
         </tr>
       <% }); %>
     </tbody>

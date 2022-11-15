@@ -7,7 +7,7 @@ const userSchema = new mongoose.Schema({
   token: {type: String, require: true},
   salt: {type: String, require: true},
   hash: {type: String, require: true},
-  dateOfBirth: {type : Date, require: true },
+  birthdate: {type : Date, require: true },
   role: {type: String, default : "customer"},
 });
 
