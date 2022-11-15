@@ -1,6 +1,11 @@
 <nav class="nav-bar">
   <div class="nav-item">
     <a class="nav-link" href="/">Home</a>
+    <% if (locals.currentUser) { %>
+      <% if (currentUser.role === "manager") { %>
+        <a href="/users" class="nav-link">Users List</a>
+      <% } %>
+    <% } %>
   </div>
   <% if (locals.currentUser) { %>
     <form class="log-form" action="/logout" method="post">

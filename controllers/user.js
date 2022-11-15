@@ -4,7 +4,7 @@ async function userGet(req, res) {
   try {
     const User = req.app.get("models").User;
     const MyUsers = await User.find();
-    return res.json(MyUsers);
+    return res.render("users.ejs", {user: req.user, users: MyUsers});
   } catch (error) {
     return res.json(error.message);
   }

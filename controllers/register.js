@@ -38,6 +38,7 @@ async function registerPost(req, res) {
     }
 
     //todo: gestion utilisateur unique
+    //todo: gestion birthdate on register
 
     const {token, salt, hash} = encryptPassword(req.body.password);
 
@@ -49,7 +50,7 @@ async function registerPost(req, res) {
       token,
       salt,
       hash,
-      dateOfBirth: req.body.dateOfBirth,
+      dateOfBirth: new Date(),
       login: req.body.login,
     }).save();
     return res.redirect("/login");

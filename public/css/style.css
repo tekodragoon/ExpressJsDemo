@@ -96,3 +96,24 @@ legend {
   color: whitesmoke;
   border: none;
 }
+
+/* TABLE */
+
+.list-table {
+  border: 1px solid black;
+  border-collapse: collapse;
+  margin: auto;
+}
+
+.list-table-head-item {
+  background-color: hsl(0, 0%, 45%);
+  border: 1px solid hsl(0, 0%, 15%);
+  color: whitesmoke;
+  padding: 0.5rem;
+  min-width: 6rem;
+}
+
+.list-table-body-item {
+  border: 1px solid hsl(0, 0%, 15%);
+  padding: 0.5rem;
+}

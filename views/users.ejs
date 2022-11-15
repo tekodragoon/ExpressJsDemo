@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+  <%- include("_head", {documentTitle: "Users List" }); %>
+<body>
+  <%- include("_nav", {currentUser: locals.user}); %>
+  <h1>Users List</h1>
+  <table class="list-table">
+    <thead>
+      <tr class="list-table-head">
+        <th class="list-table-head-item">LastName</th>
+        <th class="list-table-head-item">FirstName</th>
+        <th class="list-table-head-item">Date of birth</th>
+        <th class="list-table-head-item">Role</th>
+        <th class="list-table-head-item">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% include("_formatDate") %>
+      <% locals.users.forEach((user) => { %>
+        <tr>
+          <td class="list-table-body-item"><%= user.lastName %> </td>
+          <td class="list-table-body-item"><%= user.firstName %> </td>
+          <td class="list-table-body-item"><%= formatDate(user.dateOfBirth) %> </td>
+          <td class="list-table-body-item"><%= user.role %> </td>
+          <td class="list-table-body-item">
+            <a class="btn" href="/updateUser">Edit</a></td>
+        </tr>
+      <% }); %>
+    </tbody>
+  </table>
+</body>
+</html>
