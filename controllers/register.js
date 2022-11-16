@@ -29,14 +29,12 @@ async function registerPost(req, res) {
       return res.redirect("back");
     }
 
-    //todo: gestion birthdate on register
-
     const {token, salt, hash} = encryptPassword(req.body.password);
 
     const User = req.app.get("models").User;
 
-    const alreadyExist = User.findOne({login: req.body.login});
-
+    const alreadyExist = await User.findOne({login: req.body.login});
+    console.log(alreadyExist);
     if (alreadyExist) {
       req.flash("error", "login already used");
       return res.redirect("back");
@@ -48,7 +46,7 @@ async function registerPost(req, res) {
       token,
       salt,
       hash,
-      birthdate: new Date(),
+      birthdate: new Date("2030-01-01"),
       login: req.body.login,
     }).save();
     return res.redirect("/login");

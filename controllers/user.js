@@ -72,6 +72,22 @@ async function userUpdate(req, res) {
       req.flash("error", "_id or modify fields missing");
       return res.redirect('back');
     }
+    if (!req.body.lastName) {
+      req.flash("error", "lastName fields missing");
+      return res.redirect('back');
+    }
+    if (!req.body.firstName) {
+      req.flash("error", "firstName fields missing");
+      return res.redirect('back');
+    }
+    if (!req.body.birthdate) {
+      req.flash("error", "birthdate fields missing");
+      return res.redirect('back');
+    }
+    if (!req.body.role) {
+      req.flash("error", "role fields missing");
+      return res.redirect('back');
+    }
     const User = req.app.get("models").User;
     const UserToModify = await User.findById(req.body._id);
     if (!UserToModify) {

@@ -4,6 +4,9 @@
 %>
 
 <% formatDate = function(date) {
+  if (date.getFullYear() == 2030) {
+    return "Not set"
+  }
   return [
     padTo2Digits(date.getDate()),
     padTo2Digits(date.getMonth() + 1),
@@ -13,6 +16,9 @@
 %>
 
 <% formatInputDate = function(date) {
+  if (date.getFullYear() == 2030) {
+    return "-";
+  }
   return [
     date.getFullYear(),
     padTo2Digits(date.getMonth() + 1),
