@@ -9,8 +9,8 @@
 <form class="util-form" action="/register" method="post">
   <fieldset>
     <legend>Register information</legend>
-    <% if (locals.errorMessage) { %>
-      <div class="error"> <%= errorMessage %> </div>
+    <% if (messages.error) { %>
+      <div class="error"> <%= messages.error %> </div>
     <% } %>
     <div>
       <label for="lastName">LastName</label>

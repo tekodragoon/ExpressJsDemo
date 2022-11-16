@@ -13,36 +13,34 @@ async function registerGet(req, res) {
 async function registerPost(req, res) {
   try {
     if (!req.body.lastName) {
-      const query = queryString.stringify({
-        error : "No lastName provided"
-      });
-      return res.redirect("/register?" + query);
+      req.flash("error", "No lastName provided");
+      return res.redirect("back");
     }
     if (!req.body.firstName) {
-      const query = queryString.stringify({
-        error : "No firstName provided"
-      });
-      return res.redirect("/register?" + query);
+      req.flash("error", "No firstName provided");
+      return res.redirect("back");
     }
     if (!req.body.login) {
-      const query = queryString.stringify({
-        error : "No login provided"
-      });
-      return res.redirect("/register?" + query);
+      req.flash("error", "No login provided");
+      return res.redirect("back");
     }
     if (!req.body.password) {
-      const query = queryString.stringify({
-        error : "No password provided"
-      });
-      return res.redirect("/register?" + query);
+      req.flash("error", "No password provided");
+      return res.redirect("back");
     }
 
-    //todo: gestion utilisateur unique
     //todo: gestion birthdate on register
 
     const {token, salt, hash} = encryptPassword(req.body.password);
 
     const User = req.app.get("models").User;
+
+    const alreadyExist = User.findOne({login: req.body.login});
+
+    if (alreadyExist) {
+      req.flash("error", "login already used");
+      return res.redirect("back");
+    }
 
     const NewUser = await new User({
       firstName: req.body.firstName,

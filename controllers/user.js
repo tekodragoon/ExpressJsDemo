@@ -63,7 +63,6 @@ async function userDelete(req, res) {
   }
 }
 
-// todo: create error page
 async function userUpdate(req, res) {
   if (req.user.role !== "manager") {
     return res.json("unauthorized");
