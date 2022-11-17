@@ -53,6 +53,8 @@ legend {
 
 .btn {
   background-color: hsl(0, 0%, 25%);
+  cursor: pointer;
+  height: 31px;
   color: whitesmoke;
   padding: 0.2rem 1rem;
   border: hsl(0, 0%, 15%);
@@ -117,11 +119,33 @@ legend {
   background-color: hsl(0, 0%, 45%);
   border: 1px solid hsl(0, 0%, 15%);
   color: whitesmoke;
-  padding: 0.5rem;
+  padding: 0.3rem;
   min-width: 6rem;
 }
 
 .list-table-body-item {
   border: 1px solid hsl(0, 0%, 15%);
   padding: 0.5rem;
+}
+
+/* Dialog */
+
+.dialog {
+  width: 250px;
+  background-color: whitesmoke;
+  color: hsl(0, 0%, 15%);
+  text-align: center;
+  border: 1px solid hsl(0, 0%, 15%);
+  border-radius: 5px;
+  padding: 0.5rem 0;
+}
+
+dialog::backdrop {
+  /* native */
+  background-color: hsla(35, 65%, 0%, 0.8);
+}
+
+dialog + .backdrop {
+  /* polyfill */
+  background-color: hsla(35, 65%, 0%, 0.8);
 }

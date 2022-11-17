@@ -47,17 +47,23 @@ async function userCreate(req, res) {
 }
 
 async function userDelete(req, res) {
-  if (req.role !== "manager") {
+  if (req.user.role !== "manager") {
     return res.json("unauthorized");
   }
   try {
     if (!req.body._id) {
-      return res.json("_id missing");
+      req.flash("error", "_id missing");
+      return res.redirect("back");
+    }
+    if (req.body._id == req.user.id) {
+      req.flash("error", "You can not delete yourself");
+      return res.redirect("back");
     }
     const User = req.app.get("models").User;
     const UserToDelete = await User.findById(req.body._id);
     await UserToDelete.remove();
-    return res.json("Successfully deleted");
+    req.flash("info", "Successfully deleted");
+    return res.redirect("back");
   } catch (error) {
     return res.json(error.message);
   }

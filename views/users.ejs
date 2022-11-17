@@ -7,6 +7,17 @@
   <% if (messages.info) { %>
     <div class="info"> <%= messages.info %> </div>
   <% } %>
+  <% if (messages.error) { %>
+    <div class="error"> <%= messages.error %> </div>
+  <% } %>
+  <dialog class="dialog hidden" id="valid-delete">
+    <form action="/userDelete" method="post">
+      <div>Are you sure?</div>
+      <input type="hidden" name="_id" id="delete-token">
+      <button class="btn" id="cancel-delete" type="button">Cancel</button>
+      <button class="btn" id="valid-delete" type="submit">Valid</button>
+    </form>
+  </dialog>
   <table class="list-table">
     <thead>
       <tr class="list-table-head">
@@ -26,10 +37,13 @@
           <td class="list-table-body-item"><%= formatDate(user.birthdate) %> </td>
           <td class="list-table-body-item"><%= user.role %> </td>
           <td class="list-table-body-item">
-            <a class="btn" href="/user?id=<%= user.id %>">Edit</a></td>
+            <a class="btn" href="/user?id=<%= user.id %>">Edit</a>
+            <button class="btn delete" >Delete</button>
+          </td>
         </tr>
       <% }); %>
     </tbody>
   </table>
+  <script src="/js/users.js" type="module"></script>
 </body>
 </html>
