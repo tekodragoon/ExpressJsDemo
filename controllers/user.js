@@ -157,10 +157,10 @@ async function userUpdate(req, res) {
     if (modify) {
       req.flash("info", "User successfully modified");
     }
-    return res.redirect("back");
+    return res.redirect("/users");
   } catch (error) {
     req.flash("error", error.message);
-    return res.redirect("back");
+    return res.redirect("/users");
   }
 }
 
