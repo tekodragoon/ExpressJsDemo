@@ -5,10 +5,10 @@
   <%- include("_nav", {currentUser: locals.user}); %>
   <h1>Users List</h1>
   <% if (messages.info) { %>
-    <div class="info"> <%= messages.info %> </div>
+    <div class="info flash"> <%= messages.info %> </div>
   <% } %>
   <% if (messages.error) { %>
-    <div class="error"> <%= messages.error %> </div>
+    <div class="error flash"> <%= messages.error %> </div>
   <% } %>
   <dialog class="dialog" id="valid-delete-dialog">
     <form action="/userDelete" method="post">

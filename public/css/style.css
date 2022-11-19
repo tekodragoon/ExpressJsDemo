@@ -74,16 +74,39 @@ legend {
   color: gray;
 }
 
+/* FLASH MESSAGE */
+
+.flash {
+  position: fixed;
+  top: 60px;
+  left: -100%;
+  color: whitesmoke;
+  font-size: 1.1rem;
+  width: fit-content;
+  padding: 0.5rem;
+  border-radius: 10px;
+  box-shadow: 2px 2px 5px black;
+  animation: show 4000ms ease-in-out;
+}
+
 .error {
-  color: red;
+  background-color: red;
 }
 
 .info {
-  color: green;
-  font-size: 1.1rem;
-  width: fit-content;
-  margin: auto;
-  margin-bottom: 0.5rem;
+  background-color: green;
+}
+
+@keyframes show {
+  0% {
+    left: -100%;
+  }
+  6% {
+    left: 30px;
+  }
+  94% {
+    left: 30px;
+  }
 }
 
 /* NAVBAR */

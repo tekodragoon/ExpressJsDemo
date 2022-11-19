@@ -9,7 +9,7 @@
     <fieldset>
       <legend>user information</legend>
       <% if (messages.error) { %>
-        <div class="error"> <%= messages.error %> </div>
+        <div class="error flash"> <%= messages.error %> </div>
       <% } %>
       <input type="hidden" name="_id" value="<%= myUser._id %>">
       <div>
