@@ -1,17 +1,17 @@
-const { customerCreate, customerGet, customerUpdate, customerDelete } = require("../controllers/customer");
+const { customerCreate } = require("../controllers/customer");
 
 function customerRoute(app) {
   // Create
   app.post("/customerCreate", customerCreate);
 
   // Read
-  app.get("/customers", customerGet);
+  // app.get("/customers", customerGet);
 
   // Update
-  app.post("/customerUpdate", customerUpdate);
+  // app.post("/customerUpdate", customerUpdate);
 
   // Delete
-  app.post("/customerDelete", customerDelete);
+  // app.post("/customerDelete", customerDelete);
 }
 
 module.exports = customerRoute;

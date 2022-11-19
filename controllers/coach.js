@@ -1,23 +1,6 @@
-const { models } = require("mongoose");
+// const { models } = require("mongoose");
 const encryptPassword = require("../utils/encryptPassword");
 const { errorMessage } = require("../utils/utils");
-
-async function coachGet(req, res) {
-  try {
-    const Coach = req.app.get("models").Coach;
-    let MyCoachs;
-    if (req.query.discipline) {
-      MyCoachs = await Coach.find({
-        discipline : req.query.discipline
-      }).populate("user");
-    } else {
-      MyCoachs = await Coach.find().populate("user");
-    }
-    return res.json(MyCoachs);
-  } catch (error) {
-    return res.json(error.message);
-  }
-}
 
 async function coachCreate(req, res) {
   if (req.user.role !== "manager") {
@@ -77,6 +60,24 @@ async function coachCreate(req, res) {
   }
 }
 
+/*
+async function coachGet(req, res) {
+  try {
+    const Coach = req.app.get("models").Coach;
+    let MyCoachs;
+    if (req.query.discipline) {
+      MyCoachs = await Coach.find({
+        discipline : req.query.discipline
+      }).populate("user");
+    } else {
+      MyCoachs = await Coach.find().populate("user");
+    }
+    return res.json(MyCoachs);
+  } catch (error) {
+    return res.json(error.message);
+  }
+}
+
 async function coachUpdate(req, res) {
   if (req.role !== "manager") {
     return res.json("unauthorized");
@@ -125,5 +126,6 @@ async function coachDelete(req, res) {
     return res.json(error.message);
   }
 }
+*/
 
-module.exports = { coachGet, coachCreate, coachUpdate, coachDelete };
+module.exports = { coachCreate };

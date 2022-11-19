@@ -1,5 +1,5 @@
 const encryptPassword = require("../utils/encryptPassword");
-const { errorMessage } = require("../utils/utils");
+const { errorMessage, capitalize } = require("../utils/utils");
 
 async function usersGet(req, res) {
   try {
@@ -91,8 +91,31 @@ async function userDelete(req, res) {
     }
     const User = req.app.get("models").User;
     const UserToDelete = await User.findById(req.body._id);
+    if (!UserToDelete) {
+      req.flash("error", "User not found");
+      return res.redirect("back");
+    }
+    if (UserToDelete.role == "coach") {
+      const Coach = req.app.get("models").Coach;
+      const coachToDelete = await Coach.findOne({user: UserToDelete._id});
+      if (!coachToDelete) {
+        req.flash("error", "Coach not found");
+        return res.redirect("back");
+      }
+      await coachToDelete.remove();
+    }
+    if (UserToDelete.role == "customer") {
+      const Customer = req.app.get("models").Customer;
+      const customerToDelete = await Customer.findOne({user: UserToDelete._id});
+      if (!customerToDelete) {
+        req.flash("error", "Customer not found");
+        return res.redirect("back");
+      }
+      await customerToDelete.remove();
+    }
     await UserToDelete.remove();
-    req.flash("info", "Successfully deleted");
+    let userType = capitalize(UserToDelete.role);
+    req.flash("info", `${userType} Successfully deleted`);
     return res.redirect("back");
   } catch (error) {
     req.flash("error", error.message);
@@ -100,6 +123,7 @@ async function userDelete(req, res) {
   }
 }
 
+//TODO: if role is modified, update in database must be made inside customers or coaches
 async function userUpdate(req, res) {
   if (req.user.role !== "manager") {
     req.flash("error", "Unauthorized");

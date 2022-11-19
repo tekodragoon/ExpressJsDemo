@@ -1,19 +1,6 @@
-const { models } = require("mongoose");
+// const { models } = require("mongoose");
 const encryptPassword = require("../utils/encryptPassword");
 const { errorMessage } = require("../utils/utils");
-
-async function customerGet(req, res) {
-  try {
-    const Customer = req.app.get("models").Customer;
-    const MyCustomers = await Customer.find().populate("user").populate("subscriptions");
-    if (!MyCustomers) {
-      return res.json("Error find customers");
-    }
-    return res.json(MyCustomers);
-  } catch (error) {
-    return res.json(error.message);
-  }
-}
 
 async function customerCreate(req, res) {
   if (req.user.role !== "manager") {
@@ -73,6 +60,20 @@ async function customerCreate(req, res) {
   }
 }
 
+/*
+async function customerGet(req, res) {
+  try {
+    const Customer = req.app.get("models").Customer;
+    const MyCustomers = await Customer.find().populate("user").populate("subscriptions");
+    if (!MyCustomers) {
+      return res.json("Error find customers");
+    }
+    return res.json(MyCustomers);
+  } catch (error) {
+    return res.json(error.message);
+  }
+}
+
 async function customerUpdate(req, res) {
   if (req.role !== "manager") {
     return res.json("unauthorized");
@@ -121,5 +122,6 @@ async function customerDelete(req, res) {
     return res.json(error.message);
   }
 }
+*/
 
-module.exports = { customerGet, customerCreate, customerUpdate, customerDelete };
+module.exports = { customerCreate };
