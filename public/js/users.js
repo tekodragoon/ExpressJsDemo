@@ -38,13 +38,9 @@ deleteValidButton.addEventListener("click", (ev) => {
   deleteDialog.close();
 });
 
-// createValidButton.addEventListener("click", (ev) => {
-//   createDialog.close();
-// });
 createCancelButton.addEventListener("click", (ev) => {
   createDialog.close();
 });
-
 
 openCreateDialog.addEventListener("click", (ev) => {
   openCreateUserDialog();
