@@ -6,7 +6,8 @@ async function usersGet(req, res) {
     const MyUsers = await User.find();
     return res.render("users.ejs", {user: req.user, users: MyUsers});
   } catch (error) {
-    return res.json(error.message);
+    req.flash("error", error.message);
+    return res.redirect("back");
   }
 }
 
@@ -16,39 +17,71 @@ async function userGet(req, res) {
     const user = await User.findById(req.query.id);
     return res.render("user.ejs", {user: req.user, myUser: user});
   } catch (error) {
-    return res.json(error.message);
+    req.flash("error", error.message);
+    return res.redirect("back");
   }
 }
 
 async function userCreate(req, res) {
-  if (req.role !== "manager") {
-    return res.json("unauthorized");
+  if (req.user.role !== "manager") {
+    req.flash("error", "Unauthorized");
+    return res.redirect("back");
   }
   try {
-    if (!req.body.password) {
-      return res.json("No password provided");
+    if (!req.body.lastName) {
+      req.flash("error", errorMessage("Lastname"));
+      return res.redirect('back');
     }
+    if (!req.body.firstName) {
+      req.flash("error", errorMessage("Firstname"));
+      return res.redirect('back');
+    }
+    if (!req.body.birthdate) {
+      req.flash("error", errorMessage("Birthdate"));
+      return res.redirect('back');
+    }
+    if (!req.body.role) {
+      req.flash("error", errorMessage("Role"));
+      return res.redirect('back');
+    }
+    if (!req.body.login) {
+      req.flash("error", errorMessage("Login"));
+      return res.redirect('back');
+    }
+    if (!req.body.password) {
+      req.flash("error", errorMessage("Password"));
+      return res.redirect('back');
+    }
+    
     const {token, salt, hash} = encryptPassword(req.body.password);
-
     const User = req.app.get("models").User;
 
-    const NewUser = await new User({
+    await new User({
       firstName: req.body.firstName,
       lastName: req.body.lastName,
       token,
       salt,
       hash,
       birthdate: req.body.birthdate,
+      role: req.body.role
     }).save();
-    return res.json(NewUser);
+
+    req.flash("info", "User successfully created");
+    return res.redirect("back");
   } catch (error) {
-    return res.json(error.message);
+    req.flash("error", error.message);
+    return res.redirect("back");
   }
+}
+
+function errorMessage(type) {
+  return `Creation error. ${type} not provided`;
 }
 
 async function userDelete(req, res) {
   if (req.user.role !== "manager") {
-    return res.json("unauthorized");
+    req.flash("error", "Unauthorized");
+    return res.redirect("back");
   }
   try {
     if (!req.body._id) {
@@ -65,13 +98,15 @@ async function userDelete(req, res) {
     req.flash("info", "Successfully deleted");
     return res.redirect("back");
   } catch (error) {
-    return res.json(error.message);
+    req.flash("error", error.message);
+    return res.redirect("back");
   }
 }
 
 async function userUpdate(req, res) {
   if (req.user.role !== "manager") {
-    return res.json("unauthorized");
+    req.flash("error", "Unauthorized");
+    return res.redirect("back");
   }
   try {
     if (!req.body._id) {
@@ -79,25 +114,25 @@ async function userUpdate(req, res) {
       return res.redirect('back');
     }
     if (!req.body.lastName) {
-      req.flash("error", "lastName fields missing");
+      req.flash("error", "Lastname fields missing");
       return res.redirect('back');
     }
     if (!req.body.firstName) {
-      req.flash("error", "firstName fields missing");
+      req.flash("error", "Firstname fields missing");
       return res.redirect('back');
     }
     if (!req.body.birthdate) {
-      req.flash("error", "birthdate fields missing");
+      req.flash("error", "Birthdate fields missing");
       return res.redirect('back');
     }
     if (!req.body.role) {
-      req.flash("error", "role fields missing");
+      req.flash("error", "Role fields missing");
       return res.redirect('back');
     }
     const User = req.app.get("models").User;
     const UserToModify = await User.findById(req.body._id);
     if (!UserToModify) {
-      req.flash("error", "user not found");
+      req.flash("error", "User not found");
       return res.redirect('back');
     }
     // const KeysToModify = Object.keys(req.body.toModify);
@@ -125,9 +160,10 @@ async function userUpdate(req, res) {
     if (modify) {
       req.flash("info", "User successfully modified");
     }
-    return res.redirect("/users");
+    return res.redirect("back");
   } catch (error) {
-    return res.json(error.message);
+    req.flash("error", error.message);
+    return res.redirect("back");
   }
 }
 

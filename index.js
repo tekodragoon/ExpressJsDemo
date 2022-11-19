@@ -84,6 +84,8 @@ passport.use(
   )
 );
 
+//TODO: create auth middleware
+
 userRoute(app);
 customerRoute(app);
 coachRoute(app);

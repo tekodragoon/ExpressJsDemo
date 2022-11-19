@@ -10,12 +10,53 @@
   <% if (messages.error) { %>
     <div class="error"> <%= messages.error %> </div>
   <% } %>
-  <dialog class="dialog hidden" id="valid-delete">
+  <dialog class="dialog" id="valid-delete-dialog">
     <form action="/userDelete" method="post">
       <div>Are you sure?</div>
       <input type="hidden" name="_id" id="delete-token">
       <button class="btn" id="cancel-delete" type="button">Cancel</button>
       <button class="btn" id="valid-delete" type="submit">Valid</button>
+    </form>
+  </dialog>
+  <dialog class="createDialog" id="create-user-dialog">
+    <form class="util-form" method="post" id="form-create-user">
+      <fieldset>
+        <legend>User Information</legend>
+        <div>
+          <label for="lastName">Lastname</label>
+          <input type="text" id="lastName" name="lastName">
+        </div>
+        <div>
+          <label for="firstName">Firstname</label>
+          <input type="text" id="firstName" name="firstName">
+        </div>
+        <div>
+          <label for="birthdate">Birthdate</label>
+          <input type="date" id="birthdate" name="birthdate">
+        </div>
+        <div>
+          <label for="role">Role</label>
+          <select id="role" name="role">
+            <option disabled selected value>Choose a role</option>
+            <option value="customer">Customer</option>
+            <option value="coach">Coach</option>
+            <option value="manager">Manager</option>
+          </select>
+        </div>
+      </fieldset>
+      <fieldset>
+        <legend>User login</legend>
+        <div>
+          <label for="login">Login</label>
+          <input type="text" id="login" name="login">
+        </div>
+        <div>
+          <label for="password">Password</label>
+          <input type="text" id="password" name="password">
+        </div>
+      </fieldset>
+      <button type="button" class="btn" id="cancel-create">Cancel</button>
+      <button type="submit" class="btn" id="valid-create" disabled>Create</button>
     </form>
   </dialog>
   <table class="list-table">
@@ -43,6 +84,13 @@
         </tr>
       <% }); %>
     </tbody>
+    <tfoot>
+      <tr>
+        <td>
+          <button class="btn" id="new-user">Create New User</button>
+        </td>
+      </tr>
+    </tfoot>
   </table>
   <script src="/js/users.js" type="module"></script>
 </body>
