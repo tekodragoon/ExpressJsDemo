@@ -1,4 +1,5 @@
 const encryptPassword = require("../utils/encryptPassword");
+const { errorMessage } = require("../utils/utils");
 
 async function usersGet(req, res) {
   try {
@@ -72,10 +73,6 @@ async function userCreate(req, res) {
     req.flash("error", error.message);
     return res.redirect("back");
   }
-}
-
-function errorMessage(type) {
-  return `Creation error. ${type} not provided`;
 }
 
 async function userDelete(req, res) {

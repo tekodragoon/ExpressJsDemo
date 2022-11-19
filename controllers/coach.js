@@ -1,5 +1,6 @@
 const { models } = require("mongoose");
 const encryptPassword = require("../utils/encryptPassword");
+const { errorMessage } = require("../utils/utils");
 
 async function coachGet(req, res) {
   try {
@@ -19,12 +20,34 @@ async function coachGet(req, res) {
 }
 
 async function coachCreate(req, res) {
-  if (req.role !== "manager") {
-    return res.json("unauthorized");
+  if (req.user.role !== "manager") {
+    req.flash("error", "Unauthorized");
+    return res.redirect("back");
   }
   try {
+    if (!req.body.lastName) {
+      req.flash("error", errorMessage("Lastname"));
+      return res.redirect('back');
+    }
+    if (!req.body.firstName) {
+      req.flash("error", errorMessage("Firstname"));
+      return res.redirect('back');
+    }
+    if (!req.body.birthdate) {
+      req.flash("error", errorMessage("Birthdate"));
+      return res.redirect('back');
+    }
+    if (!req.body.role) {
+      req.flash("error", errorMessage("Role"));
+      return res.redirect('back');
+    }
+    if (!req.body.login) {
+      req.flash("error", errorMessage("Login"));
+      return res.redirect('back');
+    }
     if (!req.body.password) {
-      return res.json("No password provided");
+      req.flash("error", errorMessage("Password"));
+      return res.redirect('back');
     }
     
     const models = req.app.get("models");
@@ -35,18 +58,22 @@ async function coachCreate(req, res) {
       token,
       salt,
       hash,
-      dateOfBirth: req.body.dateOfBirth,
-      role: req.body.role ?? "coach"
+      birthdate: req.body.birthdate,
+      role: req.body.role,
     }).save();
-    const newCoach = await new models.Coach({
+
+    await new models.Coach({
       user: newUser._id,
       bio: req.body.bio ?? "No bio for this coach",
       discipline: req.body.discipline ?? "Multisport",
       slots: []
     }).save();
-    return res.json(newCoach);
+
+    req.flash("info", "Coach Successfully created");
+    return res.redirect("back");
   } catch (error) {
-    return res.json(error.message);
+    req.flash("error", error.message);
+    return res.redirect("back");
   }
 }
 
