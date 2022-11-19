@@ -63,15 +63,21 @@ legend {
   height: 31px;
   color: whitesmoke;
   padding: 0.2rem 1rem;
-  border: hsl(0, 0%, 15%);
+  border: hsl(0, 0%, 25%);
   border-radius: 0.5rem;
   border-width: 2px;
+  border-style: solid;
   text-decoration: none;
   margin: 0.5rem;
 }
 
 .btn:disabled {
   color: gray;
+}
+
+.btn:hover {
+  background-color: transparent;
+  color: hsl(0, 0%, 25%);
 }
 
 /* FLASH MESSAGE */
