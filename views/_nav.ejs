@@ -8,9 +8,14 @@
     <% } %>
   </div>
   <% if (locals.currentUser) { %>
-    <form class="log-form" action="/logout" method="post">
-      <button class="logout" type="submit" style="cursor:pointer">Logout</button>
-    </form>
+    <div class="nav-item">
+      <% if (currentUser.role !== "manager") { %>
+        <a class="nav-link" href="/account">Account</a>
+      <% } %> 
+      <form class="log-form" action="/logout" method="post">
+        <button class="logout" type="submit" style="cursor:pointer">Logout</button>
+      </form>
+    </div>
   <% } else { %>
   <div class="nav-item">
     <a class="nav-link" href="/register">Register</a>

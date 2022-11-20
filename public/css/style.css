@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+
 * {
   box-sizing: border-box;
   scroll-behavior: smooth;
@@ -6,6 +8,7 @@
 body {
   background-color: hsl(0, 0%, 95%);
   margin: 0;
+  font-family: 'Roboto', sans-serif;
 }
 
 h1 {
@@ -13,6 +16,10 @@ h1 {
   margin: auto;
   margin-bottom: 2rem;
   color: hsl(240, 100%, 15%);
+}
+
+button {
+  font-family: 'Roboto', sans-serif;
 }
 
 .hidden {
@@ -158,13 +165,19 @@ legend {
 }
 
 .nav-link {
+  outline: none;
   color: whitesmoke;
   text-decoration: none;
   margin: 0 0.5rem;
+  font-size: 0.9rem;
 }
 
 .nav-item {
+  display: flex;
+  height: 25px;
   margin: 0.3rem;
+  justify-content: space-evenly;
+  align-items: center;
 }
 
 .log-form {
@@ -173,9 +186,11 @@ legend {
 }
 
 .logout {
+  display: inline-block;
   background-color: transparent;
   color: whitesmoke;
   border: none;
+  font-size: 0.9rem;
 }
 
 /* TABLE */
