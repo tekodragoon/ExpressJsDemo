@@ -47,8 +47,8 @@ async function coachCreate(req, res) {
 
     await new models.Coach({
       user: newUser._id,
-      bio: req.body.bio ?? "No bio for this coach",
-      discipline: req.body.discipline ?? "Multisport",
+      bio: "No bio for this coach",
+      discipline: "Multisport",
       slots: []
     }).save();
 

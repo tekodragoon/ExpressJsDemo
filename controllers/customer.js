@@ -48,8 +48,8 @@ async function customerCreate(req, res) {
 
     await new models.Customer({
       user: newUser._id,
-      subcriptions: req.body.subcriptions ?? [],
-      level: req.body.level ?? "beginner"
+      subcriptions: [],
+      level: "beginner"
     }).save();
 
     req.flash("info", "Customer successfully created");

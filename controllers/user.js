@@ -123,7 +123,6 @@ async function userDelete(req, res) {
   }
 }
 
-//TODO: if role is modified, update in database must be made inside customers or coaches
 async function userUpdate(req, res) {
   if (req.user.role !== "manager") {
     req.flash("error", "Unauthorized");
@@ -174,7 +173,42 @@ async function userUpdate(req, res) {
       modify = true;
     }
     if (UserToModify.role != req.body.role) {
+      if (UserToModify.role == "coach") {
+        const coach = req.app.get("models").Coach;
+        const coachToDelete = coach.findOne({user: UserToModify._id});
+        if (!coachToDelete) {
+          req.flash("error", "Coach not found");
+          return res.redirect("back");
+        }
+        await coachToDelete.remove();
+      }
+      if (UserToModify.role == "customer") {
+        const customer = req.app.get("models").Customer;
+        const customerToDelete = customer.findOne({user: UserToModify._id});
+        if (!customerToDelete) {
+          req.flash("error", "Customer not found");
+          return res.redirect("back");
+        }
+        await customerToDelete.remove();
+      }
       UserToModify.role = req.body.role;
+      if (UserToModify.role == "coach") {
+        const coach = req.app.get("models").Coach;
+        await new coach({
+          user: UserToModify._id,
+          bio: "No bio for this coach",
+          discipline: "Multisport",
+          slots: []
+        }).save();
+      }
+      if (UserToModify.role == "customer") {
+        const customer = req.app.get("models").Customer;
+        await new customer({
+          user: UserToModify._id,
+          subcriptions: [],
+          level: "beginner"
+        }).save();
+      }
       modify = true;
     }
     await UserToModify.save();
