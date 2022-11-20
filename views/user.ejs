@@ -24,17 +24,29 @@
         <label for="birthdate">Birthdate</label>
         <input type="date" id="birthdate" name="birthdate" value="<%= formatInputDate(myUser.birthdate) %>">
       </div>
+      <% if (myUser.role === "coach") { %>
       <div>
-        <label for="role">Role</label>
-        <select id="role" name="role">
-          <option value="manager" <% if (myUser.role === "manager")  { %> selected <% } %> >
-            Manager</option>
-          <option value="coach" <% if (myUser.role === "coach")  { %> selected <% } %>>
-            Coach</option>
-          <option value="customer" <% if (myUser.role === "customer")  { %> selected <% } %>>
-            Customer</option>
-        </select>
+        <label for="discipline">Discipline</label>
+        <input type="text" name="discipline" id="discipline" value="<%= myCoach.discipline %>">
       </div>
+      <div>
+        <label for="bio">Bio</label>
+        <input type="text" name="bio" id="bio" value="<%= myCoach.bio %>">
+      </div>
+      <% } %>
+      <% if (myUser.role === "customer") { %>
+        <div>
+          <label for="level">Level</label>
+          <select id="level" name="level">
+            <option value="beginner" <% if (myCustomer.level === "beginner")  { %> selected <% } %> >
+              Beginner</option>
+            <option value="intermediate" <% if (myCustomer.level === "intermediate")  { %> selected <% } %>>
+              Intermediate</option>
+            <option value="advanced" <% if (myCustomer.level === "advanced")  { %> selected <% } %>>
+              Advanced</option>
+          </select>
+        </div>
+        <% } %>
     </fieldset>
     <button class="btn" type="submit">Save</button>
   </form>

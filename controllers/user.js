@@ -5,7 +5,7 @@ async function usersGet(req, res) {
   try {
     const User = req.app.get("models").User;
     const MyUsers = await User.find();
-    return res.render("users.ejs", {user: req.user, users: MyUsers});
+    return res.render("users.ejs", { user: req.user, users: MyUsers });
   } catch (error) {
     req.flash("error", error.message);
     return res.redirect("back");
@@ -16,7 +16,29 @@ async function userGet(req, res) {
   try {
     const User = req.app.get("models").User;
     const user = await User.findById(req.query.id);
-    return res.render("user.ejs", {user: req.user, myUser: user});
+    if (!user) {
+      req.flash("error", "User not found");
+      return res.redirect("back");
+    }
+    if (user.role === "coach") {
+      const Coach = req.app.get("models").Coach;
+      const coach = await Coach.findOne({ user: user._id });
+      return res.render("user.ejs", {
+        user: req.user,
+        myUser: user,
+        myCoach: coach,
+      });
+    }
+    if (user.role === "customer") {
+      const Customer = req.app.get("models").Customer;
+      const customer = await Customer.findOne({ user: user._id });
+      return res.render("user.ejs", {
+        user: req.user,
+        myUser: user,
+        myCustomer: customer,
+      });
+    }
+    return res.render("user.ejs", { user: req.user, myUser: user });
   } catch (error) {
     req.flash("error", error.message);
     return res.redirect("back");
@@ -31,30 +53,30 @@ async function userCreate(req, res) {
   try {
     if (!req.body.lastName) {
       req.flash("error", errorMessage("Lastname"));
-      return res.redirect('back');
+      return res.redirect("back");
     }
     if (!req.body.firstName) {
       req.flash("error", errorMessage("Firstname"));
-      return res.redirect('back');
+      return res.redirect("back");
     }
     if (!req.body.birthdate) {
       req.flash("error", errorMessage("Birthdate"));
-      return res.redirect('back');
+      return res.redirect("back");
     }
     if (!req.body.role) {
       req.flash("error", errorMessage("Role"));
-      return res.redirect('back');
+      return res.redirect("back");
     }
     if (!req.body.login) {
       req.flash("error", errorMessage("Login"));
-      return res.redirect('back');
+      return res.redirect("back");
     }
     if (!req.body.password) {
       req.flash("error", errorMessage("Password"));
-      return res.redirect('back');
+      return res.redirect("back");
     }
-    
-    const {token, salt, hash} = encryptPassword(req.body.password);
+
+    const { token, salt, hash } = encryptPassword(req.body.password);
     const User = req.app.get("models").User;
 
     await new User({
@@ -64,7 +86,7 @@ async function userCreate(req, res) {
       salt,
       hash,
       birthdate: req.body.birthdate,
-      role: req.body.role
+      role: req.body.role,
     }).save();
 
     req.flash("info", "User successfully created");
@@ -82,7 +104,7 @@ async function userDelete(req, res) {
   }
   try {
     if (!req.body._id) {
-      req.flash("error", "_id missing");
+      req.flash("error", "Id missing");
       return res.redirect("back");
     }
     if (req.body._id == req.user.id) {
@@ -97,7 +119,7 @@ async function userDelete(req, res) {
     }
     if (UserToDelete.role == "coach") {
       const Coach = req.app.get("models").Coach;
-      const coachToDelete = await Coach.findOne({user: UserToDelete._id});
+      const coachToDelete = await Coach.findOne({ user: UserToDelete._id });
       if (!coachToDelete) {
         req.flash("error", "Coach not found");
         return res.redirect("back");
@@ -106,7 +128,9 @@ async function userDelete(req, res) {
     }
     if (UserToDelete.role == "customer") {
       const Customer = req.app.get("models").Customer;
-      const customerToDelete = await Customer.findOne({user: UserToDelete._id});
+      const customerToDelete = await Customer.findOne({
+        user: UserToDelete._id,
+      });
       if (!customerToDelete) {
         req.flash("error", "Customer not found");
         return res.redirect("back");
@@ -130,36 +154,30 @@ async function userUpdate(req, res) {
   }
   try {
     if (!req.body._id) {
-      req.flash("error", "_id or modify fields missing");
-      return res.redirect('back');
+      req.flash("error", "Id missing");
+      return res.redirect("back");
     }
     if (!req.body.lastName) {
       req.flash("error", "Lastname fields missing");
-      return res.redirect('back');
+      return res.redirect("back");
     }
     if (!req.body.firstName) {
       req.flash("error", "Firstname fields missing");
-      return res.redirect('back');
+      return res.redirect("back");
     }
     if (!req.body.birthdate) {
       req.flash("error", "Birthdate fields missing");
-      return res.redirect('back');
+      return res.redirect("back");
     }
-    if (!req.body.role) {
-      req.flash("error", "Role fields missing");
-      return res.redirect('back');
-    }
-    const User = req.app.get("models").User;
-    const UserToModify = await User.findById(req.body._id);
+    const models = req.app.get("models");
+    const UserToModify = await models.User.findById(req.body._id);
     if (!UserToModify) {
       req.flash("error", "User not found");
-      return res.redirect('back');
+      return res.redirect("back");
     }
-    // const KeysToModify = Object.keys(req.body.toModify);
-    // for (const key of KeysToModify) {
-    //   UserToModify[key] = req.body.toModify[key];
-    // }
     let modify = false;
+    let coachModify = false;
+    let customerModify = false;
     if (UserToModify.lastName != req.body.lastName) {
       UserToModify.lastName = req.body.lastName;
       modify = true;
@@ -172,10 +190,93 @@ async function userUpdate(req, res) {
       UserToModify.birthdate = req.body.birthdate;
       modify = true;
     }
+    if (UserToModify.role === "coach") {
+      if (!req.body.discipline) {
+        req.flash("error", "Discipline fields missing");
+        return res.redirect("back");
+      }
+      if (!req.body.bio) {
+        req.flash("error", "Bio fields missing");
+        return res.redirect("back");
+      }
+      const CoachToModify = await models.Coach.findOne({
+        user: UserToModify._id,
+      });
+      if (!CoachToModify) {
+        req.flash("error", "Coach not found");
+        return res.redirect("back");
+      }
+      if (CoachToModify.discipline != req.body.discipline) {
+        CoachToModify.discipline = req.body.discipline;
+        coachModify = true;
+      }
+      if (CoachToModify.bio != req.body.bio) {
+        CoachToModify.bio = req.body.bio;
+        coachModify = true;
+      }
+      if (coachModify) {
+        await CoachToModify.save();
+      }
+    }
+    if (UserToModify.role === "customer") {
+      if (!req.body.level) {
+        req.flash("error", "Level fields missing");
+        return res.redirect("back");
+      }
+      const CustomerToModify = await models.Customer.findOne({
+        user: UserToModify._id,
+      });
+      if (!CustomerToModify) {
+        req.flash("error", "Customer not found");
+        return res.redirect("back");
+      }
+      if (CustomerToModify.level != req.body.level) {
+        CustomerToModify.level = req.body.level;
+        customerModify = true;
+      }
+      if (customerModify) {
+        await CustomerToModify.save();
+      }
+    }
+    if (modify) {
+      await UserToModify.save();
+    }
+    if (modify || coachModify || customerModify) {
+      let userType = capitalize(UserToModify.role);
+      req.flash("info", `${userType} Successfully modified`);
+    }
+    return res.redirect("/users");
+  } catch (error) {
+    req.flash("error", error.message);
+    return res.redirect("/users");
+  }
+}
+
+async function userUpdateRole(req, res) {
+  if (req.user.role !== "manager") {
+    req.flash("error", "Unauthorized");
+    return res.redirect("back");
+  }
+  try {
+    if (!req.body._id) {
+      req.flash("error", "_id fields missing");
+      return res.redirect("back");
+    }
+    if (!req.body.role) {
+      req.flash("error", "Role fields missing");
+      return res.redirect("back");
+    }
+    const models = req.app.get("models");
+    const UserToModify = await models.User.findById(req.body._id);
+    if (!UserToModify) {
+      req.flash("error", "User not found");
+      return res.redirect("back");
+    }
+    let modify = false;
     if (UserToModify.role != req.body.role) {
       if (UserToModify.role == "coach") {
         const coach = req.app.get("models").Coach;
-        const coachToDelete = coach.findOne({user: UserToModify._id});
+        const coachToDelete = coach.findOne({ user: UserToModify._id });
         if (!coachToDelete) {
           req.flash("error", "Coach not found");
           return res.redirect("back");
@@ -184,7 +285,7 @@ async function userUpdate(req, res) {
       }
       if (UserToModify.role == "customer") {
         const customer = req.app.get("models").Customer;
-        const customerToDelete = customer.findOne({user: UserToModify._id});
+        const customerToDelete = customer.findOne({ user: UserToModify._id });
         if (!customerToDelete) {
           req.flash("error", "Customer not found");
           return res.redirect("back");
@@ -198,7 +299,7 @@ async function userUpdate(req, res) {
           user: UserToModify._id,
           bio: "No bio for this coach",
           discipline: "Multisport",
-          slots: []
+          slots: [],
         }).save();
       }
       if (UserToModify.role == "customer") {
@@ -206,14 +307,14 @@ async function userUpdate(req, res) {
         await new customer({
           user: UserToModify._id,
           subcriptions: [],
-          level: "beginner"
+          level: "beginner",
         }).save();
       }
       modify = true;
     }
-    await UserToModify.save();
     if (modify) {
-      req.flash("info", "User successfully modified");
+      await UserToModify.save();
+      req.flash("info", "User Role Successfully modified");
     }
     return res.redirect("/users");
   } catch (error) {
@@ -222,16 +323,23 @@ async function userUpdate(req, res) {
   }
 }
 
-padTo2Digits = function(num) {
-  return num.toString().padStart(2, '0');
-}
+padTo2Digits = function (num) {
+  return num.toString().padStart(2, "0");
+};
 
-shortDate = function(date) {
+shortDate = function (date) {
   return [
     date.getFullYear(),
     padTo2Digits(date.getMonth() + 1),
     padTo2Digits(date.getDate()),
-  ].join('-');
-}
+  ].join("-");
+};
 
-module.exports = { usersGet, userCreate, userDelete, userUpdate, userGet };
+module.exports = {
+  usersGet,
+  userCreate,
+  userDelete,
+  userUpdate,
+  userGet,
+  userUpdateRole,
+};

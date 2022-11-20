@@ -15,6 +15,10 @@ h1 {
   color: hsl(240, 100%, 15%);
 }
 
+.hidden {
+  display: none;
+}
+
 /* FOMRULAIRE */
 
 fieldset {
@@ -45,9 +49,11 @@ legend {
   margin-bottom: 2px;
 }
 
-.util-form input {
+.util-form input,
+.util-form select {
   margin-bottom: 15px;
-  min-width: 50vw;
+  min-width: 30vw;
+  width: 400px;
 }
 
 .opposite {
@@ -58,26 +64,52 @@ legend {
 }
 
 .btn {
+  display: inline-block;
   background-color: hsl(0, 0%, 25%);
   cursor: pointer;
-  height: 31px;
+  height: 40px;
+  line-height: 38px;
   color: whitesmoke;
-  padding: 0.2rem 1rem;
+  padding: 0 1rem;
   border: hsl(0, 0%, 25%);
   border-radius: 0.5rem;
   border-width: 2px;
   border-style: solid;
-  text-decoration: none;
   margin: 0.5rem;
+}
+
+.btn-small {
+  background-color: hsl(0, 0%, 25%);
+  cursor: pointer;
+  height: 40px;
+  width: 40px;
+  padding: 3px;
+  border: hsl(0, 0%, 25%);
+  border-radius: 0.5rem;
+  border-width: 2px;
+  border-style: solid;
+  margin: 0.5rem;
+}
+
+.btn a {
+  outline: none;
+  text-decoration: none;
+  color: whitesmoke;
 }
 
 .btn:disabled {
   color: gray;
 }
 
-.btn:hover {
+.btn:hover,
+.btn:hover a {
   background-color: transparent;
   color: hsl(0, 0%, 25%);
+}
+
+.btn-small:hover {
+  background-color: hsl(0, 0%, 45%);
+  border: hsl(0, 0%, 45%);
 }
 
 /* FLASH MESSAGE */
@@ -166,6 +198,12 @@ legend {
   padding: 0.5rem;
 }
 
+.role-zone {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
 /* Dialog */
 
 .dialog {
@@ -178,7 +216,7 @@ legend {
   padding: 0.5rem 0;
 }
 
-.createDialog {
+.formDialog {
   background-color: whitesmoke;
   border: none;
   border-radius: 0.5rem;

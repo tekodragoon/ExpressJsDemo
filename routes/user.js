@@ -1,4 +1,4 @@
-const { usersGet, userCreate, userDelete, userUpdate, userGet } = require("../controllers/user");
+const { usersGet, userCreate, userDelete, userUpdate, userGet, userUpdateRole } = require("../controllers/user");
 
 function userRoute(app) {
   // Create
@@ -9,6 +9,8 @@ function userRoute(app) {
   app.get("/user", userGet);
   // Update
   app.post("/userUpdate", userUpdate);
+  // Update Role
+  app.post("/userUpdateRole", userUpdateRole);
   // Delete
   app.post("/userDelete", userDelete);
 }
