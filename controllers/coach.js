@@ -43,6 +43,7 @@ async function coachCreate(req, res) {
       hash,
       birthdate: req.body.birthdate,
       role: req.body.role,
+      login: req.body.login
     }).save();
 
     await new models.Coach({
