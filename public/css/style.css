@@ -58,10 +58,45 @@ legend {
 
 .util-form input,
 .util-form select {
-  margin-bottom: 15px;
+  margin-bottom: 0;
   min-width: 30vw;
   width: 400px;
+  border: 2px solid black;
+  border-radius: 5px;
+  box-shadow: none;
+  padding: 0.3rem;
 }
+
+.util-form input:focus,
+.util-form select:focus {
+  outline: none;
+}
+
+.util-form input:valid,
+.util-form select:valid {
+  border-color: hsl(120, 100%, 29%);
+}
+
+.util-form input:invalid,
+.util-form select:invalid {
+  border-color: hsl(0, 100%, 35%);
+  border-radius: 5px 5px 0 0;
+}
+
+.error-field {
+  padding: 0;
+  font-size: 80%;
+  color: whitesmoke;
+  background-color: hsl(0, 100%, 35%);
+  border-radius: 0 0 5px 5px;
+  margin-bottom: 15px;
+}
+
+.error-field.active {
+  padding: 0.3rem;
+}
+
+/* DIVERS */
 
 .opposite {
   display: flex;

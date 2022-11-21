@@ -3,6 +3,12 @@
 <%- include("_head", {documentTitle: "home" }); %>
 <body>
   <%- include("_nav", {currentUser: locals.user}); %>
+  <% if (messages.info) { %>
+    <div class="info flash"> <%= messages.info %> </div>
+  <% } %>
+  <% if (messages.error) { %>
+    <div class="error flash"> <%= messages.error %> </div>
+  <% } %>
   <% if (locals.user) { %>
     <h1>Hello <%= user.firstName %></h1>
   <% } %>

@@ -4,40 +4,46 @@
 <body>
   <%- include("_nav", {currentUser: locals.user}); %>
   <% include("_formatDate") %>
-  <h1>User</h1>
-  <form class="util-form" action="/userUpdate" method="post">
+  <% if (messages.error) { %>
+    <div class="error flash"> <%= messages.error %> </div>
+  <% } %>
+  <h1>Edit User's Information</h1>
+  <form class="util-form" action="/userUpdate" method="post" novalidate id="user-form">
     <fieldset>
       <legend>user information</legend>
-      <% if (messages.error) { %>
-        <div class="error flash"> <%= messages.error %> </div>
-      <% } %>
       <input type="hidden" name="_id" value="<%= myUser._id %>">
+      <input type="hidden" name="referer" value="<%= referer %>">
       <div>
         <label for="lastName">Lastname</label>
-        <input type="text" id="lastName" name="lastName" value="<%= myUser.lastName %>">
+        <input type="text" id="lastName" name="lastName" value="<%= myUser.lastName %>" required minlength="2">
+        <div class="error-field" aria-live="polite" id="lastName-err-fld"></div>
       </div>
       <div>
         <label for="firstName">Firstname</label>
-        <input type="text" id="firstName" name="firstName" value="<%= myUser.firstName %>">
+        <input type="text" id="firstName" name="firstName" value="<%= myUser.firstName %>" required minlength="2">
+        <div class="error-field" aria-live="polite" id="firstName-err-fld"></div>
       </div>
       <div>
         <label for="birthdate">Birthdate</label>
-        <input type="date" id="birthdate" name="birthdate" value="<%= formatInputDate(myUser.birthdate) %>">
+        <input type="date" id="birthdate" name="birthdate" value="<%= formatInputDate(myUser.birthdate) %>" required>
+        <div class="error-field" aria-live="polite" id="birthdate-err-fld"></div>
       </div>
       <% if (myUser.role === "coach") { %>
       <div>
         <label for="discipline">Discipline</label>
-        <input type="text" name="discipline" id="discipline" value="<%= myCoach.discipline %>">
+        <input type="text" name="discipline" id="discipline" value="<%= myCoach.discipline %>" required minlength="2">
+        <div class="error-field" aria-live="polite" id="discipline-err-fld"></div>
       </div>
       <div>
         <label for="bio">Bio</label>
-        <input type="text" name="bio" id="bio" value="<%= myCoach.bio %>">
+        <input type="text" name="bio" id="bio" value="<%= myCoach.bio %>" required minlength="2">
+        <div class="error-field" aria-live="polite" id="bio-err-fld"></div>
       </div>
       <% } %>
       <% if (myUser.role === "customer") { %>
         <div>
           <label for="level">Level</label>
-          <select id="level" name="level">
+          <select id="level" name="level" required>
             <option value="beginner" <% if (myCustomer.level === "beginner")  { %> selected <% } %> >
               Beginner</option>
             <option value="intermediate" <% if (myCustomer.level === "intermediate")  { %> selected <% } %>>
@@ -49,6 +55,8 @@
         <% } %>
     </fieldset>
     <button class="btn" type="submit">Save</button>
+    <span class="error-field" aria-live="polite" id="form-err-fld"></span>
   </form>
+  <script src="/js/user.js"></script>
 </body>
 </html>

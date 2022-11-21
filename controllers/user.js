@@ -27,6 +27,7 @@ async function userGet(req, res) {
         user: req.user,
         myUser: user,
         myCoach: coach,
+        referer: req.headers.referer,
       });
     }
     if (user.role === "customer") {
@@ -36,9 +37,14 @@ async function userGet(req, res) {
         user: req.user,
         myUser: user,
         myCustomer: customer,
+        referer: req.headers.referer,
       });
     }
-    return res.render("user.ejs", { user: req.user, myUser: user });
+    return res.render("user.ejs", {
+      user: req.user,
+      myUser: user,
+      referer: req.headers.referer,
+    });
   } catch (error) {
     req.flash("error", error.message);
     return res.redirect("back");
@@ -87,7 +93,7 @@ async function userCreate(req, res) {
       hash,
       birthdate: req.body.birthdate,
       role: req.body.role,
-      login: req.body.login
+      login: req.body.login,
     }).save();
 
     req.flash("info", "User successfully created");
@@ -246,7 +252,7 @@ async function userUpdate(req, res) {
       let userType = capitalize(UserToModify.role);
       req.flash("info", `${userType} Successfully modified`);
     }
-    return res.redirect("/users");
+    return res.redirect(req.body.referer);
   } catch (error) {
     req.flash("error", error.message);
     return res.redirect("/users");
@@ -324,6 +330,14 @@ async function userUpdateRole(req, res) {
   }
 }
 
+async function userAccount(req, res) {
+  try {
+  } catch (error) {
+    req.flash("error", error.message);
+    return res.redirect("back");
+  }
+}
+
 padTo2Digits = function (num) {
   return num.toString().padStart(2, "0");
 };
@@ -343,4 +357,5 @@ module.exports = {
   userUpdate,
   userGet,
   userUpdateRole,
+  userAccount,
 };
