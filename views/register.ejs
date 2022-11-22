@@ -3,40 +3,44 @@
 <%- include("_head", {documentTitle: "register"}); %>
 <body>
 <%- include("_nav"); %>
-
+<% if (messages.error) { %>
+  <div class="error flash"> <%= messages.error %> </div>
+<% } %>
 <h1>Register</h1>
 
-<form class="util-form" action="/register" method="post">
+<form class="util-form" action="/register" method="post" id="register-form" novalidate>
   <fieldset>
     <legend>Register information</legend>
-    <% if (messages.error) { %>
-      <div class="error flash"> <%= messages.error %> </div>
-    <% } %>
     <div>
       <label for="lastName">LastName</label>
-      <input type="text" id="lastName" name="lastName">
+      <input type="text" id="lastName" name="lastName" required minlength="2">
+      <div class="error-field" aria-live="polite" id="lastName-err-fld"></div>
     </div>
     <div>
       <label for="firstName">FirstName</label>
-      <input type="text" id="firstName" name="firstName">
+      <input type="text" id="firstName" name="firstName" required minlength="2">
+      <div class="error-field" aria-live="polite" id="firstName-err-fld"></div>
     </div>
     <div>
       <label for="login">Login Name</label>
-      <input type="text" id="login" name="login">
+      <input type="text" id="login" name="login" required minlength="5">
+      <div class="error-field" aria-live="polite" id="login-err-fld"></div>
     </div>
     <div>
       <label for="password">Password</label>
-      <input type="text" id="password" name="password">
+      <input type="text" id="password" name="password" required minlength="8">
+      <div class="error-field" aria-live="polite" id="password-err-fld"></div>
     </div>
   </fieldset>
   <button class="btn" type="submit">Register</button>
+  <div class="error-field" aria-live="polite" id="form-err-fld"></div>
   <div class="opposite">
     Already register ?<br>
     <a class="btn" href="/login">Login</a>
   </div>
 </form>
 
-
+<script src="/js/register.js"></script>
 
 </body>
 </html>
