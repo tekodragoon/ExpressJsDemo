@@ -2,11 +2,6 @@ const queryString = require("querystring");
 const encryptPassword = require("../utils/encryptPassword");
 
 async function registerGet(req, res) {
-  if (req.query.error) {
-    return res.render('register.ejs', {
-      errorMessage: req.query.error
-    });
-  }
   return res.render('register.ejs');
 }
 
