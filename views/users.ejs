@@ -19,44 +19,51 @@
     </form>
   </dialog>
   <dialog class="formDialog" id="create-user-dialog">
-    <form class="util-form" method="post" id="form-create-user">
+    <form class="util-form" method="post" id="form-create-user" novalidate>
       <fieldset>
         <legend>User Information</legend>
         <div>
           <label for="lastName">Lastname</label>
-          <input type="text" id="lastName" name="lastName">
+          <input type="text" id="lastName" name="lastName" required minlength="2">
+          <div class="error-field" aria-live="polite" id="lastName-err-fld"></div>
         </div>
         <div>
           <label for="firstName">Firstname</label>
-          <input type="text" id="firstName" name="firstName">
+          <input type="text" id="firstName" name="firstName" required minlength="2">
+          <div class="error-field" aria-live="polite" id="firstName-err-fld"></div>
         </div>
         <div>
           <label for="birthdate">Birthdate</label>
-          <input type="date" id="birthdate" name="birthdate">
+          <input type="date" id="birthdate" name="birthdate" required>
+          <div class="error-field" aria-live="polite" id="birthdate-err-fld"></div>
         </div>
         <div>
           <label for="role">Role</label>
-          <select id="role" name="role">
+          <select id="role" name="role" required>
             <option disabled selected value>Choose a role</option>
             <option value="customer">Customer</option>
             <option value="coach">Coach</option>
             <option value="manager">Manager</option>
           </select>
+          <div class="error-field" aria-live="polite" id="role-err-fld"></div>
         </div>
       </fieldset>
       <fieldset>
         <legend>User login</legend>
         <div>
           <label for="login">Login</label>
-          <input type="text" id="login" name="login">
+          <input type="text" id="login" name="login" required minlength="5">
+          <div class="error-field" aria-live="polite" id="login-err-fld"></div>
         </div>
         <div>
           <label for="password">Password</label>
-          <input type="text" id="password" name="password">
+          <input type="text" id="password" name="password" required minlength="8">
+          <div class="error-field" aria-live="polite" id="password-err-fld"></div>
         </div>
       </fieldset>
       <button type="button" class="btn" id="cancel-create">Cancel</button>
       <button type="submit" class="btn" id="valid-create" disabled>Create</button>
+      <div class="error-field" aria-live="polite" id="form-err-fld"></div>
     </form>
   </dialog>
   <dialog class="formDialog" id="role-switch-dialog">
