@@ -31,16 +31,16 @@ async function registerPost(req, res) {
 
     const {token, salt, hash} = encryptPassword(req.body.password);
 
-    const User = req.app.get("models").User;
+    const models = req.app.get("models");
 
-    const alreadyExist = await User.findOne({login: req.body.login});
+    const alreadyExist = await models.User.findOne({login: req.body.login});
     console.log(alreadyExist);
     if (alreadyExist) {
       req.flash("error", "login already used");
       return res.redirect("back");
     }
 
-    const NewUser = await new User({
+    const NewUser = await new models.User({
       firstName: req.body.firstName,
       lastName: req.body.lastName,
       token,
@@ -49,6 +49,14 @@ async function registerPost(req, res) {
       birthdate: new Date("2030-01-01"),
       login: req.body.login,
     }).save();
+
+    await new models.Customer({
+      user: NewUser._id,
+      subcriptions: [],
+      level: "beginner"
+    }).save();
+
+    
     return res.redirect("/login");
   } catch (error) {
     return res.json(error.message);
