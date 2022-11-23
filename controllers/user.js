@@ -155,10 +155,10 @@ async function userDelete(req, res) {
 }
 
 async function userUpdate(req, res) {
-  if (req.user.role !== "manager") {
-    req.flash("error", "Unauthorized");
-    return res.redirect("back");
-  }
+  // if (req.user.role !== "manager") {
+  //   req.flash("error", "Unauthorized");
+  //   return res.redirect("back");
+  // }
   try {
     if (!req.body._id) {
       req.flash("error", "Id missing");
@@ -249,8 +249,7 @@ async function userUpdate(req, res) {
       await UserToModify.save();
     }
     if (modify || coachModify || customerModify) {
-      let userType = capitalize(UserToModify.role);
-      req.flash("info", `${userType} Successfully modified`);
+      req.flash("info", "Information Successfully modified");
     }
     return res.redirect(req.body.referer);
   } catch (error) {
@@ -332,6 +331,37 @@ async function userUpdateRole(req, res) {
 
 async function userAccount(req, res) {
   try {
+    const models = req.app.get("models");
+    const currentUser = await models.User.findById(req.user._id);
+    if (!currentUser) {
+      req.flash("error", "User not found");
+      return res.redirect("back");
+    }
+    if (currentUser.role === "coach") {
+      const coach = await models.Coach.findOne({user: currentUser._id});
+      if (!coach) {
+        req.flash("error", "Coach info not found");
+        return res.redirect("back");
+      }
+      return res.render("account.ejs", {
+        user: currentUser,
+        coach: coach
+      });
+    }
+    if (currentUser.role === "customer") {
+      const customer = await models.Customer.findOne({user: currentUser._id});
+      if (!customer) {
+        req.flash("error", "Customer info not found");
+        return res.redirect("back");
+      }
+      return res.render("account.ejs", {
+        user: currentUser,
+        customer: customer
+      });
+    }
+    return res.render("account.ejs", {
+      user: currentUser
+    });
   } catch (error) {
     req.flash("error", error.message);
     return res.redirect("back");

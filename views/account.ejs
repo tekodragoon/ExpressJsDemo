@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include("_head", {documentTitle: "account" }); %>
+<body>
+  <%- include("_nav", {currentUser: locals.user}); %>
+  <%- include("_formatDate") %>
+  <% if (messages.info) { %>
+    <div class="info flash"> <%= messages.info %> </div>
+  <% } %>
+  <% if (messages.error) { %>
+    <div class="error flash"> <%= messages.error %> </div>
+  <% } %>
+  <% if (locals.user) { %>
+    <h1>Welcome <%= user.firstName %></h1>
+    <div class="user-info">
+      <div class="user-info-item">
+        <span>LastName : </span><%= user.lastName %>
+      </div>
+      <div class="user-info-item">
+        <span>FirstName : </span><%= user.firstName %>
+      </div>
+      <div class="user-info-item">
+        <span>Login : </span><%= user.login %>
+      </div>
+      <div class="user-info-item">
+        <span>Birthdate : </span><%= formatDate(user.birthdate) %>
+      </div>
+      <% if (user.role === "coach") { %>
+        <div class="user-info-item">
+          <span>Discipline : </span><%= coach.discipline %>
+        </div>
+        <div class="user-info-item">
+          <span>Bio : </span><%= coach.bio %>
+        </div>
+      <% } %>
+      <% if (user.role === "customer") { %>
+        <div class="user-info-item">
+          <span>Level : </span><%= customer.level %>
+        </div>
+      <% } %>
+      <div class="btn">
+        <a href="/user?id=<%= user._id %>">Modify</a>
+      </div>
+    </div>
+  <% } else { %>
+    <p class="user-info-error">Something wrong. Try to login again or contact support.</p>
+  <% } %> 
+</body>
+</html>

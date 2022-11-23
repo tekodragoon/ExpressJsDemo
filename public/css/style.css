@@ -154,6 +154,39 @@ legend {
   border: hsl(0, 0%, 45%);
 }
 
+.user-info {
+  width: 400px;
+  margin: auto;
+  padding: 0.5rem;
+  background-color: azure;
+  border-radius: 10px;
+  box-shadow: 1px 1px 5px gray;
+}
+
+.user-info-item {
+  background-color: whitesmoke;
+  padding: 0.3rem;
+  border-radius: 5px;
+  border: 1px solid black;
+  margin-bottom: 15px;
+}
+
+.user-info-item span {
+  color: brown;
+  font-size: 1.1rem;
+}
+
+.user-info-item:last-of-type {
+  margin-bottom: 0;
+}
+
+.user-info-error {
+  width: fit-content;
+  margin: auto;
+  margin-top: 20px;
+  color: brown;
+}
+
 /* FLASH MESSAGE */
 
 .flash {
