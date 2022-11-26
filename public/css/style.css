@@ -314,3 +314,74 @@ dialog + .backdrop {
   /* polyfill */
   background-color: hsla(35, 65%, 0%, 0.8);
 }
+
+/* SLOTS */
+
+.slots-group {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  padding: 1rem;
+  gap: 10px;
+  min-height: 300px;
+}
+
+.slots {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.slots-top-actions {
+  border: 1px solid black;
+  padding: 1rem 2rem;
+  margin: auto;
+  width: fit-content;
+  display: flex;
+  justify-content: space-around;
+  gap: 1rem;
+}
+
+.slots-day-group {
+  border: 1px solid black;
+}
+
+.slots-date {
+  background-color: hsl(0, 0%, 15%);
+  color: whitesmoke;
+  padding: 0.3rem 1rem;
+}
+
+.slots-date-actions {
+  padding: 0.5rem;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.slot-add-btn {
+  display: inline-flex;
+  align-items: center;
+  width: 40px;
+  height: 40px;
+  cursor: pointer;
+  border-radius: 50%;
+  border: 2px solid hsl(0, 0%, 15%);
+  background-color: hsl(0, 0%, 15%);
+  color: whitesmoke;
+}
+
+.slot-add-btn:hover {
+  background-color: hsl(0, 0%, 45%);
+}
+
+.slot-top-btn {
+  display: inline;
+  background-color: hsl(0, 0%, 15%);
+  padding: 0.3rem;
+  border-radius: 0.3rem;
+}
+
+.slot-top-btn a {
+  color: whitesmoke;
+  text-decoration: none;
+}

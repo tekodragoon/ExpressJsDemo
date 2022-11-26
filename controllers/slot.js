@@ -1,13 +1,35 @@
 const { models } = require("mongoose");
+const { addDays, today } = require("../utils/utils");
 
 async function slotGet(req, res) {
   try {
     const Slot = req.app.get("models").Slot;
     const MySlots = await Slot.find().populate("coach").populate("customers");
     if (!MySlots) {
-      return res.json("Error find slots");
+      req.flash("error", "Can't find slots");
+      return res.redirect("back");
     }
-    return res.json(MySlots);
+    let currentDate = today();
+    if (req.query.date) {
+      let year = req.query.date.substring(0,4);
+      let month = req.query.date.substring(4,6);
+      let day = req.query.date.substring(6);
+      currentDate.setFullYear(year, month, day);
+    } else {
+      currentDate.setDate(currentDate.getDate() - (currentDate.getDay() + 6) % 7);
+    }
+    let friday = addDays(currentDate, 4);
+    friday.setHours(23, 0, 0, 0);
+    console.log("monday:" + currentDate );
+    console.log("friday:" + friday);
+    let cb = v => v.date >= currentDate && v.date <= friday;
+    const remains = MySlots.filter(cb);
+    return res.render("slots.ejs", {
+      user: req.user,
+      slots: remains,
+      monday: currentDate,
+      friday: friday,
+    });
   } catch (error) {
     return res.json(error.message);
   }

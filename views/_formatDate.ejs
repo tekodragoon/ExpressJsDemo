@@ -26,3 +26,38 @@
   ].join('-');
 }
 %>
+
+<% shortDate = function(date) {
+  return [
+    padTo2Digits(date.getDate()),
+    date.toLocaleDateString("en-US", {month: 'short'}),
+  ].join(' ');
+}
+%>
+
+<% nextDate = function(date, next) {
+  let result = new Date(date);
+  result.setDate(date.getDate() + next);
+  return result.toLocaleDateString("en-US", 
+  {
+    weekday: 'short',
+    day: 'numeric',
+    month: 'short',
+  });
+}
+%>
+
+<% reqDate = function(date, next) {
+  let result = new Date(date);
+  if (next) {
+    result.setDate(date.getDate() + 7);
+  } else {
+    result.setDate(date.getDate() - 7);
+  }
+  return [
+    result.getFullYear(),
+    padTo2Digits(result.getMonth()),
+    padTo2Digits(result.getDate()),
+  ].join('');
+}
+%>

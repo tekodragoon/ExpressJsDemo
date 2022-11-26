@@ -5,6 +5,12 @@
       <% if (currentUser.role === "manager") { %>
         <a href="/users" class="nav-link">Users List</a>
       <% } %>
+      <% if (currentUser.role === "coach") { %>
+        <a href="/slots" class="nav-link">Slots Gestion</a>
+      <% } %>
+      <% if (currentUser.role === "customer") { %>
+        <a href="/slots" class="nav-link">Agenda</a>
+      <% } %>
     <% } %>
   </div>
   <% if (locals.currentUser) { %>
