@@ -20,8 +20,6 @@ async function slotGet(req, res) {
     }
     let friday = addDays(currentDate, 4);
     friday.setHours(23, 0, 0, 0);
-    console.log("monday:" + currentDate );
-    console.log("friday:" + friday);
     let cb = v => v.date >= currentDate && v.date <= friday;
     const remains = MySlots.filter(cb);
     return res.render("slots.ejs", {

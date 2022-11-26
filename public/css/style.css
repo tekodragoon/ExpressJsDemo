@@ -96,6 +96,17 @@ legend {
   padding: 0.3rem;
 }
 
+.util-form .input-clock-bloc {
+  display: flex;
+  width: 400px;
+  min-width: 30vw;
+}
+
+.util-form .input-clock {
+  width: 200px;
+  min-width: 15vw;
+}
+
 /* DIVERS */
 
 .opposite {

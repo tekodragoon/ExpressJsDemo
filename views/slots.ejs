@@ -5,28 +5,30 @@
   <%- include("_nav", {currentUser: locals.user}); %>
   <%- include("_formatDate"); %>
   <h1>Slots</h1>
-  <% console.log(locals.Slots); %>
   <div class="slots-top-actions">
     <div class="slot-top-btn">
-      <a id="prev" href="/slots?date=<%= reqDate(monday, false) %>"><<</a>
+      <a href="/slots?date=<%= reqDate(monday, false) %>"><<</a>
     </div>
     <span id="week"><%= shortDate(monday) %> - <%= shortDate(friday) %> </span>
     <div class="slot-top-btn">
-      <a id="next" href="/slots?date=<%= reqDate(monday, true) %>">>></a>
+      <a href="/slots?date=<%= reqDate(monday, true) %>">>></a>
     </div>
   </div>
   <div class="slots-group">
     <% for(let i = 0; i < 5; i++) { %>
       <div class="slots">
         <div class="slots-day-group">
-          <div class="slots-date"><%= nextDate(monday, i) %></div>
+          <div class="slots-date"><%= nextStringDate(monday, i) %></div>
           <div class="slots-date-actions">
             <% locals.slots.forEach((slot) => { %>
               <div><%= slot.date %></div>
             <% }); %>
-            <button class="slot-add-btn" id="slot-<%= i %>">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Pro 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path fill="#ffffff" d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32V224H48c-17.7 0-32 14.3-32 32s14.3 32 32 32H192V432c0 17.7 14.3 32 32 32s32-14.3 32-32V288H400c17.7 0 32-14.3 32-32s-14.3-32-32-32H256V80z"/></svg>
-            </button>
+            <div>
+              <button class="slot-add-btn" id="slot-<%= i %>">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Pro 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path fill="#ffffff" d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32V224H48c-17.7 0-32 14.3-32 32s14.3 32 32 32H192V432c0 17.7 14.3 32 32 32s32-14.3 32-32V288H400c17.7 0 32-14.3 32-32s-14.3-32-32-32H256V80z"/></svg>
+              </button>
+              <span class="hidden"><%= formatInputDate(nextDate(monday, i)) %></span>
+            </div>
           </div>
         </div>
       </div>
@@ -39,24 +41,31 @@
         <input type="hidden" name="_id" value="<%= user._id %>">
         <input type="hidden" name="date" id="create-slot-date">
         <div>
+          <label for="label">Title</label>
+          <input type="text" name="label" id="label" required>
+          <div class="error-field" aria-live="polite" id="label-err-fld"></div>
+        </div>
+        <div>
           <label for="startHour">Start Time</label>
-          <input type="number" name="startHour" id="startHour" min="9" max="18" step="1">
-          <input type="number" name="startMin" id="startMin" min="0" max="30" step="30">
+          <div class="input-clock-bloc">
+            <input class="input-clock" type="number" name="startHour" id="startHour" min="9" max="18" step="1" required>
+            <input class="input-clock" type="number" name="startMin" id="startMin" min="0" max="30" step="30" required>
+            <div class="error-field" aria-live="polite" id="time-err-fld"></div>
+          </div>
         </div>
         <div>
           <label for="duration">Duration</label>
-          <input type="number" name="duration" id="duration" min="1" max="4" step="1">
-        </div>
-        <div>
-          <label for="label">Title</label>
-          <input type="text" name="label" id="label">
+          <input type="number" name="duration" id="duration" min="1" max="4" step="1" required>
+          <div class="error-field" aria-live="polite" id="duration-err-fld"></div>
         </div>
         <div>
           <label for="peopleLimit">Number of place</label>
-          <input type="number" min="1" max="30" step="1">
+          <input type="number" min="1" max="30" step="1" required>
+          <div class="error-field" aria-live="polite" id="people-err-fld"></div>
         </div>
         <button class="btn" id="cancel-slot" type="button">Cancel</button>
         <button class="btn" id="valid-slot" type="button">Valid</button>
+        <div class="error-field" aria-live="polite" id="form-err-fld"></div>
       </fieldset>
     </form>
   </dialog>

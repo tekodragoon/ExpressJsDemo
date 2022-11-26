@@ -38,6 +38,13 @@
 <% nextDate = function(date, next) {
   let result = new Date(date);
   result.setDate(date.getDate() + next);
+  return result;
+}
+%>
+
+<% nextStringDate = function(date, next) {
+  let result = new Date(date);
+  result.setDate(date.getDate() + next);
   return result.toLocaleDateString("en-US", 
   {
     weekday: 'short',
