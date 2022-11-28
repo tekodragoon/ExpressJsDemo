@@ -35,36 +35,36 @@
     <% } %> 
   </div>
   <dialog class="formDialog" id="slot-dialog">
-    <form class="util-form" action="#" method="post">
+    <form class="util-form" action="#" method="post" id="slot-form" novalidate>
       <fieldset>
         <legend>Slot information</legend>
         <input type="hidden" name="_id" value="<%= user._id %>">
         <input type="hidden" name="date" id="create-slot-date">
         <div>
-          <label for="label">Title</label>
-          <input type="text" name="label" id="label" required>
-          <div class="error-field" aria-live="polite" id="label-err-fld"></div>
+          <label for="title">Title</label>
+          <input type="text" name="title" id="title" required minlength="5">
+          <div class="error-field" aria-live="polite" id="title-err-fld"></div>
         </div>
         <div>
           <label for="startHour">Start Time</label>
           <div class="input-clock-bloc">
-            <input class="input-clock" type="number" name="startHour" id="startHour" min="9" max="18" step="1" required>
-            <input class="input-clock" type="number" name="startMin" id="startMin" min="0" max="30" step="30" required>
-            <div class="error-field" aria-live="polite" id="time-err-fld"></div>
+            <input class="input-clock" type="number" name="startHour" id="startHour" min="9" max="18" step="1" required value="09">
+            <input class="input-clock" type="number" name="startMin" id="startMin" min="0" max="30" step="30" required value="00">
           </div>
+          <div class="error-field" aria-live="polite" id="time-err-fld"></div>
         </div>
         <div>
           <label for="duration">Duration</label>
-          <input type="number" name="duration" id="duration" min="1" max="4" step="1" required>
+          <input type="number" name="duration" id="duration" min="1" max="4" step="1" required value="1">
           <div class="error-field" aria-live="polite" id="duration-err-fld"></div>
         </div>
         <div>
-          <label for="peopleLimit">Number of place</label>
-          <input type="number" min="1" max="30" step="1" required>
+          <label for="peopleLimit">Seats</label>
+          <input type="number" name="peopleLimit" id="peopleLimit" min="1" max="30" step="1" required value="1">
           <div class="error-field" aria-live="polite" id="people-err-fld"></div>
         </div>
         <button class="btn" id="cancel-slot" type="button">Cancel</button>
-        <button class="btn" id="valid-slot" type="button">Valid</button>
+        <button class="btn" id="valid-slot" type="submit">Valid</button>
         <div class="error-field" aria-live="polite" id="form-err-fld"></div>
       </fieldset>
     </form>

@@ -35,9 +35,34 @@ async function slotGet(req, res) {
 
 async function slotCreate(req, res) {
   if (!isAuthorized(req.role)) {
-    return res.json("unauthorized");
+    req.flash("error", "Unauthorized");
+    return res.redirect("back");
   }
   try {
+    if (!req.body.label) {
+      req.flash("error", "Title field is missing");
+    return res.redirect("back");
+    }
+    if (!req.body.startHour || !req.body.startMin) {
+      req.flash("error", "Time fields are missing");
+      return res.redirect("back");
+    }
+    if (!req.body.duration) {
+      req.flash("error", "Duration field is missing");
+      return res.redirect("back");
+    }
+    if (!req.body.peopleLimit) {
+      req.flash("error", "Seats field is missing");
+      return res.redirect("back");
+    }
+    if (!req.body._id) {
+      req.flash("error", "id is missing");
+      return res.redirect("back");
+    }
+    if (!req.body.date) {
+      req.flash("error", "Date is missing");
+      return res.redirect("back");
+    }
     const models = req.app.get("models");
     let coach = await models.Coach.findById(req.body.coach);
     if (!coach) {
