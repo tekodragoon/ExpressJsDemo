@@ -34,12 +34,12 @@ async function slotGet(req, res) {
 }
 
 async function slotCreate(req, res) {
-  if (!isAuthorized(req.role)) {
+  if (!isAuthorized(req.user.role)) {
     req.flash("error", "Unauthorized");
     return res.redirect("back");
   }
   try {
-    if (!req.body.label) {
+    if (!req.body.title) {
       req.flash("error", "Title field is missing");
     return res.redirect("back");
     }
@@ -55,36 +55,38 @@ async function slotCreate(req, res) {
       req.flash("error", "Seats field is missing");
       return res.redirect("back");
     }
-    if (!req.body._id) {
-      req.flash("error", "id is missing");
-      return res.redirect("back");
-    }
     if (!req.body.date) {
       req.flash("error", "Date is missing");
       return res.redirect("back");
     }
     const models = req.app.get("models");
-    let coach = await models.Coach.findById(req.body.coach);
+    let coach = await models.Coach.findOne({user: req.user._id});
     if (!coach) {
-      return "Coach not found";
+      req.flash("error", "Coach not found");
+      return res.redirect("back");
     }
+    let start = parseInt(req.body.startHour);
+    let dur = parseInt(req.body.duration);
+    let endHour = start + dur;
 
     const newSlot = await new models.Slot({
-      date: req.body.date ?? new Date(),
+      date: req.body.date,
       startHour: req.body.startHour,
-      endHour: req.body.endHour,
-      label: req.body.label,
+      endHour: endHour,
+      title: req.body.title,
       peopleLimit: req.body.peopleLimit,
-      coach: req.body.coach,
+      coach: coach._id,
       customers: [],
     }).save();
 
     coach.slots.push(newSlot._id);
     await coach.save();
 
-    return res.json(newSlot);
+    req.flash("info", "Slot successfully save");
+    return res.redirect("back");
   } catch (error) {
-    return res.json(error.message);
+    req.flash("error", error.message);
+    return res.redirect("back");
   }
 }
 

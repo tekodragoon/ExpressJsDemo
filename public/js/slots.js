@@ -2,7 +2,6 @@ import dialogPolyfill from "/dist/dialog-polyfill.esm.js";
 
 const slotDialog = document.querySelector("#slot-dialog");
 const cancelSlot = document.querySelector("#cancel-slot");
-const validSlot = document.querySelector("#valid-slot");
 const addSlotButtons = document.querySelectorAll(".slot-add-btn");
 const createSlotDate = document.querySelector("#create-slot-date");
 const clockInputs = document.querySelectorAll(".input-clock");

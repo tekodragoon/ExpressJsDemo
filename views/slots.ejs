@@ -4,6 +4,12 @@
 <body>
   <%- include("_nav", {currentUser: locals.user}); %>
   <%- include("_formatDate"); %>
+  <% if (messages.info) { %>
+    <div class="info flash"> <%= messages.info %> </div>
+  <% } %>
+  <% if (messages.error) { %>
+    <div class="error flash"> <%= messages.error %> </div>
+  <% } %>
   <h1>Slots</h1>
   <div class="slots-top-actions">
     <div class="slot-top-btn">
@@ -35,10 +41,9 @@
     <% } %> 
   </div>
   <dialog class="formDialog" id="slot-dialog">
-    <form class="util-form" action="#" method="post" id="slot-form" novalidate>
+    <form class="util-form" action="/slotCreate" method="post" id="slot-form" novalidate>
       <fieldset>
         <legend>Slot information</legend>
-        <input type="hidden" name="_id" value="<%= user._id %>">
         <input type="hidden" name="date" id="create-slot-date">
         <div>
           <label for="title">Title</label>
