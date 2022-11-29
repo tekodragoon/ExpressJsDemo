@@ -408,12 +408,14 @@ dialog + .backdrop {
   border-bottom: 1px solid black;
 }
 
-.slot-info span {
+.slot-info-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   font-weight: bold;
   font-size: 1.1rem;
   background-color: hsl(0, 0%, 45%);
   color: whitesmoke;
-  display: block;
   padding: 0.1rem 0.3rem;
   border-radius: 0.2rem;
 }
