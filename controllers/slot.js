@@ -68,10 +68,17 @@ async function slotCreate(req, res) {
     let start = parseInt(req.body.startHour);
     let dur = parseInt(req.body.duration);
     let endHour = start + dur;
+    if (req.body.startMin == "30") {
+      start = `${start}:30`;
+      endHour = `${endHour}:30`;
+    } else {
+      start = `${start}:00`;
+      endHour = `${endHour}:00`;
+    }
 
     const newSlot = await new models.Slot({
       date: req.body.date,
-      startHour: req.body.startHour,
+      startHour: start,
       endHour: endHour,
       title: req.body.title,
       peopleLimit: req.body.peopleLimit,

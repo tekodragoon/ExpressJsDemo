@@ -54,6 +54,15 @@
 }
 %>
 
+<% compareDate = function(date, toCompare) {
+  let d = new Date(date);
+  let t = new Date(toCompare);
+  d.setHours(1,0,0,0);
+  t.setHours(1,0,0,0);
+  return t.getTime() === d.getTime();
+}
+%> 
+
 <% reqDate = function(date, next) {
   let result = new Date(date);
   if (next) {

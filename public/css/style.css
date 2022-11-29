@@ -396,3 +396,19 @@ dialog + .backdrop {
   color: whitesmoke;
   text-decoration: none;
 }
+
+.slot-info {
+  padding: 0.3rem;
+  background-color: hsl(240, 100%, 95%);
+  border-bottom: 1px solid black;
+}
+
+.slot-info span {
+  font-weight: bold;
+  font-size: 1.1rem;
+  background-color: hsl(0, 0%, 45%);
+  color: whitesmoke;
+  display: block;
+  padding: 0.1rem 0.3rem;
+  border-radius: 0.2rem;
+}
