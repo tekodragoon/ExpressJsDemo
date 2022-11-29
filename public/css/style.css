@@ -392,6 +392,11 @@ dialog + .backdrop {
   border-radius: 0.3rem;
 }
 
+.slot-top-date {
+  display: flex;
+  align-items: center;
+}
+
 .slot-top-btn a {
   color: whitesmoke;
   text-decoration: none;
