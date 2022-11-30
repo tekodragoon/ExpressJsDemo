@@ -42,6 +42,13 @@ cancelSlot.addEventListener("click", () => {
   createSlotDate.removeAttribute("value");
   slotForm.removeAttribute("action");
   slotForm.reset();
+  hideFormError();
+  let errors = document.querySelectorAll(".active");
+  errors.forEach((error) => {
+    error.className = "error-field";
+    error.textContent = "";
+  });
+
   slotDialog.close();
 });
 
