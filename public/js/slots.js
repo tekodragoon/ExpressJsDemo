@@ -19,6 +19,9 @@ const duration = document.querySelector("#duration");
 const seats = document.querySelector("#peopleLimit");
 const slotForm = document.querySelector("#slot-form");
 
+const editButtons = document.querySelectorAll(".btn-small");
+const updateSlotId = document.querySelector("#update-slot-id");
+
 // REGISTER
 
 dialogPolyfill.registerDialog(slotDialog);
@@ -30,33 +33,53 @@ slotDialog.addEventListener("cancel", (ev) => {
 
 slotForm.addEventListener("submit", (ev) => {
   if (!isFormValid()) {
-    console.log("form not valid");
     ev.preventDefault();
     showFormError();
   }
-})
+});
 
 cancelSlot.addEventListener("click", () => {
   createSlotDate.removeAttribute("value");
+  slotForm.removeAttribute("action");
+  slotForm.reset();
   slotDialog.close();
-})
+});
 
-for(let i = 0; i < addSlotButtons.length; i++) {
+for (let i = 0; i < addSlotButtons.length; i++) {
   let dateInfo = addSlotButtons[i].nextElementSibling;
   let date = dateInfo.textContent;
   addSlotButtons[i].addEventListener("click", () => {
+    slotForm.action = "/slotCreate";
     openAddSlotDialog(date);
-  })
+  });
 }
 
-for(let i = 0; i < clockInputs.length; i++) {
+for (let i = 0; i < clockInputs.length; i++) {
   clockInputs[i].addEventListener("change", () => {
     if (clockInputs[i].value.length == 1) {
       clockInputs[i].value = "0" + clockInputs[i].value;
     }
     checkMaxTime();
-  })
-  
+  });
+}
+
+for (let i = 0; i < editButtons.length; i++) {
+  editButtons[i].addEventListener("click", () => {
+    title.value = editButtons[i].previousElementSibling.textContent;
+    let infos = editButtons[i].nextElementSibling.textContent.split("&");
+    console.log(infos);
+    startMin.value = infos[0].slice(-2);
+    let startH = infos[0].slice(0, 2);
+    let endHour = infos[1].slice(0, 2);
+    duration.value = parseInt(endHour) - parseInt(startH);
+    startHour.value = startH;
+    seats.value = infos[2];
+    updateSlotId.value = infos[3];
+    let date = new Date(infos[4]);
+    let dt = formatDate(date);
+    slotForm.action = "/slotUpdate";
+    openAddSlotDialog(dt);
+  });
 }
 
 title.addEventListener("input", (ev) => {
@@ -67,7 +90,7 @@ title.addEventListener("input", (ev) => {
   } else {
     showError(title, titleErrFld);
   }
-})
+});
 
 duration.addEventListener("input", (ev) => {
   if (duration.validity.valid) {
@@ -77,7 +100,7 @@ duration.addEventListener("input", (ev) => {
   } else {
     showTimeError(durationErrFld, "1h", "4h");
   }
-})
+});
 
 seats.addEventListener("input", (ev) => {
   if (seats.validity.valid) {
@@ -87,7 +110,7 @@ seats.addEventListener("input", (ev) => {
   } else {
     showTimeError(seatsErrFld, "1", "30 seats");
   }
-})
+});
 
 startHour.addEventListener("input", timeCb);
 startMin.addEventListener("input", timeCb);
@@ -160,3 +183,17 @@ function checkErrors() {
     hideFormError();
   }
 }
+
+function padTo2Digits(num) {
+  return num.toString().padStart(2, '0');
+}
+
+function formatDate(date) {
+  console.log(date);
+  return [
+    date.getFullYear(),
+    padTo2Digits(date.getMonth() + 1),
+    padTo2Digits(date.getDate()),
+  ].join('-');
+}
+
