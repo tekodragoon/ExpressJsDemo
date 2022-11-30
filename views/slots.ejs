@@ -83,8 +83,17 @@
         </div>
         <button class="btn" id="cancel-slot" type="button">Cancel</button>
         <button class="btn" id="valid-slot" type="submit">Valid</button>
+        <button class="btn btn-danger" id="delete-slot" type="button">Delete</button>
         <div class="error-field" aria-live="polite" id="form-err-fld"></div>
       </fieldset>
+    </form>
+  </dialog>
+  <dialog class="dialog" id="valid-delete-slot">
+    <form action="/slotDelete" method="post">
+      <div>Are you sure?</div>
+      <input type="hidden" name="_id" id="slot-delete-token">
+      <button class="btn" id="cancel-delete" type="button">Cancel</button>
+      <button class="btn" id="valid-delete" type="submit">Valid</button>
     </form>
   </dialog>
 </body>

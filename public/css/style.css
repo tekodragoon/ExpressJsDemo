@@ -22,10 +22,6 @@ button {
   font-family: 'Roboto', sans-serif;
 }
 
-.hidden {
-  display: none;
-}
-
 /* FOMRULAIRE */
 
 fieldset {
@@ -124,7 +120,7 @@ legend {
   line-height: 38px;
   color: whitesmoke;
   padding: 0 1rem;
-  border: hsl(0, 0%, 25%);
+  border-color: hsl(0, 0%, 25%);
   border-radius: 0.5rem;
   border-width: 2px;
   border-style: solid;
@@ -142,6 +138,11 @@ legend {
   border-width: 2px;
   border-style: solid;
   margin: 0.5rem;
+}
+
+.btn-danger {
+  background-color: hsl(0, 90%, 40%);
+  border-color: hsl(0, 90%, 40%);
 }
 
 .btn a {
@@ -418,4 +419,10 @@ dialog + .backdrop {
   color: whitesmoke;
   padding: 0.1rem 0.3rem;
   border-radius: 0.2rem;
+}
+
+/* IMPORTANT */
+
+.hidden {
+  display: none;
 }

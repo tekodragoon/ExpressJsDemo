@@ -22,12 +22,21 @@ const slotForm = document.querySelector("#slot-form");
 const editButtons = document.querySelectorAll(".btn-small");
 const updateSlotId = document.querySelector("#update-slot-id");
 
+const deleteSlotButton = document.querySelector("#delete-slot");
+const deleteSlotDialog = document.querySelector("#valid-delete-slot");
+const deleteToken = document.querySelector("#slot-delete-token");
+const cancelDelBtn = document.querySelector("#cancel-delete");
+
 // REGISTER
 
 dialogPolyfill.registerDialog(slotDialog);
+dialogPolyfill.registerDialog(deleteSlotDialog);
 slotDialog.addEventListener("cancel", (ev) => {
   ev.preventDefault();
 });
+deleteSlotDialog.addEventListener("cancel", (ev) => {
+  ev.preventDefault();
+})
 
 // EVENTS
 
@@ -52,11 +61,21 @@ cancelSlot.addEventListener("click", () => {
   slotDialog.close();
 });
 
+cancelDelBtn.addEventListener("click", () => {
+  deleteSlotDialog.close();
+})
+
+deleteSlotButton.addEventListener("click", () => {
+
+  openDialog(deleteSlotDialog);
+})
+
 for (let i = 0; i < addSlotButtons.length; i++) {
   let dateInfo = addSlotButtons[i].nextElementSibling;
   let date = dateInfo.textContent;
   addSlotButtons[i].addEventListener("click", () => {
     slotForm.action = "/slotCreate";
+    deleteSlotButton.classList.add("hidden");
     openAddSlotDialog(date);
   });
 }
@@ -82,9 +101,11 @@ for (let i = 0; i < editButtons.length; i++) {
     startHour.value = startH;
     seats.value = infos[2];
     updateSlotId.value = infos[3];
+    deleteToken.value = infos[3];
     let date = new Date(infos[4]);
     let dt = formatDate(date);
     slotForm.action = "/slotUpdate";
+    deleteSlotButton.classList.remove("hidden");
     openAddSlotDialog(dt);
   });
 }
@@ -142,12 +163,16 @@ function checkMaxTime() {
 
 function openAddSlotDialog(date) {
   createSlotDate.value = date;
+  openDialog(slotDialog);
+}
+
+function openDialog(dialog) {
   if (typeof HTMLDialogElement === "function") {
     // console.log("navigateur compatible avec dialog");
-    slotDialog.showModal();
+    dialog.showModal();
   } else {
     // console.log("navigateur incompatible avec dialog");
-    slotDialog.show();
+    dialog.show();
   }
 }
 
