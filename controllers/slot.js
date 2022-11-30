@@ -98,26 +98,73 @@ async function slotCreate(req, res) {
 }
 
 async function slotUpdate(req, res) {
-  if (!isAuthorized(req.role)) {
-    return res.json("unauthorized");
+  if (!isAuthorized(req.user.role)) {
+    req.flash("error", "Unauthorized");
+    return res.redirect("back");
   }
   try {
-    if (!req.body._id || !req.body.toModify) {
-      return res.json("_id or toModify missing");
+    if (!req.body._id) {
+      req.flash("error", "id is missing");
+      return res.redirect("back");
+    }
+    if (!req.body.title) {
+      req.flash("error", "Title field is missing");
+    return res.redirect("back");
+    }
+    if (!req.body.startHour || !req.body.startMin) {
+      req.flash("error", "Time fields are missing");
+      return res.redirect("back");
+    }
+    if (!req.body.duration) {
+      req.flash("error", "Duration field is missing");
+      return res.redirect("back");
+    }
+    if (!req.body.peopleLimit) {
+      req.flash("error", "Seats field is missing");
+      return res.redirect("back");
     }
     const Slot = req.app.get("models").Slot;
     const SlotToModify = await Slot.findById(req.body._id);
     if (!SlotToModify) {
-      return res.json("Slot not found");
+      req.flash("error", "Slot not found");
+      return res.redirect("back");
     }
-    const KeysToModify = Object.keys(req.body.toModify);
-    for (const key of KeysToModify) {
-      SlotToModify[key] = req.body.toModify[key];
+    let modify = false;
+    let start = parseInt(req.body.startHour);
+    let dur = parseInt(req.body.duration);
+    let endHour = start + dur;
+    if (req.body.startMin == "30") {
+      start = `${start}:30`;
+      endHour = `${endHour}:30`;
+    } else {
+      start = `${start}:00`;
+      endHour = `${endHour}:00`;
     }
-    await SlotToModify.save();
-    return res.json(SlotToModify);
+    if (SlotToModify.title != req.body.title) {
+      SlotToModify.title = req.body.title;
+      modify = true;
+    }
+    if (SlotToModify.startHour != start) {
+      SlotToModify.startHour = start;
+      modify = true;
+    }
+    if (SlotToModify.endHour != endHour) {
+      SlotToModify.endHour = endHour;
+      modify = true;
+    }
+    if (SlotToModify.peopleLimit != req.body.peopleLimit) {
+      SlotToModify.peopleLimit = req.body.peopleLimit;
+      modify = true;
+    }
+    
+    if (modify) {
+      await SlotToModify.save();
+      req.flash("info", "Slot successfully modified");
+    }
+    return res.redirect("back");
   } catch (error) {
-    return res.json(error.message);
+    req.flash("error", error.message);
+    return res.redirect("back");
   }
 }
 
