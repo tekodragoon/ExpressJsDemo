@@ -169,17 +169,20 @@ async function slotUpdate(req, res) {
 }
 
 async function slotDelete(req, res) {
-  if (!isAuthorized(req.role)) {
-    return res.json("unauthorized");
+  if (!isAuthorized(req.user.role)) {
+    req.flash("error", "Unauthorized");
+    return res.redirect("back");
   }
   try {
     if (!req.body._id) {
-      return res.json("_id missing");
+      req.flash("error", "id missing");
+      return res.redirect("back");
     }
-    const Slot = req.app.get("models").Slot;
-    const SlotToDelete = await Slot.findById(req.body._id);
+    const models = req.app.get("models");
+    const SlotToDelete = await models.Slot.findById(req.body._id);
     if (!SlotToDelete) {
-      return res.json("Slot not found");
+      req.flash("error", "Slot not found");
+      return res.redirect("back");
     }
 
     for (const customer of SlotToDelete.customers) {
@@ -189,15 +192,17 @@ async function slotDelete(req, res) {
       await _customer.save();
     }
 
-    let coach = await models.Coach.findById(coach);
+    let coach = await models.Coach.findById(SlotToDelete.coach);
     let index = coach.slots.indexOf(SlotToDelete._id);
     coach.slots.splice(index, 1);
     await coach.save();
 
     await SlotToDelete.remove();
-    res.json("Successfully deleted");
+    req.flash("info", "Slot successfully deleted");
+    return res.redirect("back");
   } catch (error) {
-    return res.json(error.message);
+    req.flash("error", error.message);
+    return res.redirect("back");
   }
 }
 
