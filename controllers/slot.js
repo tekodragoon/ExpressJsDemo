@@ -69,10 +69,10 @@ async function slotCreate(req, res) {
     let dur = parseInt(req.body.duration);
     let endHour = start + dur;
     if (req.body.startMin == "30") {
-      start = `${start}:30`;
+      start = start < 10 ? `0${start}:30` : `${start}:30`;
       endHour = `${endHour}:30`;
     } else {
-      start = `${start}:00`;
+      start = start < 10 ? `0${start}:00` : `${start}:00`;
       endHour = `${endHour}:00`;
     }
 
