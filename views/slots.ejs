@@ -44,7 +44,14 @@
                   <% } %> 
                 </div>
                 <div><%= slot.startHour %> - <%= slot.endHour %></div>
-                <div><%= slot.peopleLimit %> seat<%= slot.peopleLimit > 1 ? 's' : '' %></div>
+                <div>
+                  <% let left = slot.peopleLimit - slot.customers.length %>
+                  <% if (left > 0) { %>
+                    <%= left %>/<%= slot.peopleLimit %> seat<%= slot.peopleLimit > 1 ? 's' : '' %>
+                  <% }  else { %>
+                    No more seats left
+                  <% } %>  
+                </div>
               </div>
             <% } %> 
           <% }); %>
