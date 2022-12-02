@@ -19,7 +19,7 @@ const duration = document.querySelector("#duration");
 const seats = document.querySelector("#peopleLimit");
 const slotForm = document.querySelector("#slot-form");
 
-const editButtons = document.querySelectorAll(".btn-small");
+const editButtons = document.querySelectorAll(".edit-slot");
 const updateSlotId = document.querySelector("#update-slot-id");
 
 const deleteSlotButton = document.querySelector("#delete-slot");
@@ -27,14 +27,23 @@ const deleteSlotDialog = document.querySelector("#valid-delete-slot");
 const deleteToken = document.querySelector("#slot-delete-token");
 const cancelDelBtn = document.querySelector("#cancel-delete");
 
+const bookButtons = document.querySelectorAll(".book-slot");
+const bookDialog = document.querySelector("#book-slot-dialog");
+const bookToken = document.querySelector("#book-token");
+const cancelBook = document.querySelector("#cancel-book");
+
 // REGISTER
 
 dialogPolyfill.registerDialog(slotDialog);
 dialogPolyfill.registerDialog(deleteSlotDialog);
+dialogPolyfill.registerDialog(bookDialog);
 slotDialog.addEventListener("cancel", (ev) => {
   ev.preventDefault();
 });
 deleteSlotDialog.addEventListener("cancel", (ev) => {
+  ev.preventDefault();
+})
+bookDialog.addEventListener("cancel", (ev) => {
   ev.preventDefault();
 })
 
@@ -57,7 +66,6 @@ cancelSlot.addEventListener("click", () => {
     error.className = "error-field";
     error.textContent = "";
   });
-
   slotDialog.close();
 });
 
@@ -66,8 +74,11 @@ cancelDelBtn.addEventListener("click", () => {
 })
 
 deleteSlotButton.addEventListener("click", () => {
-
   openDialog(deleteSlotDialog);
+})
+
+cancelBook.addEventListener("click", () => {
+  bookDialog.close();
 })
 
 for (let i = 0; i < addSlotButtons.length; i++) {
@@ -108,6 +119,13 @@ for (let i = 0; i < editButtons.length; i++) {
     deleteSlotButton.classList.remove("hidden");
     openAddSlotDialog(dt);
   });
+}
+
+for (let i = 0; i < bookButtons.length; i++) {
+  bookButtons[i].addEventListener("click", () => {
+    let token = bookButtons[i].nextElementSibling.textContent;
+    openValidBooking(token);
+  })
 }
 
 title.addEventListener("input", (ev) => {
@@ -164,6 +182,11 @@ function checkMaxTime() {
 function openAddSlotDialog(date) {
   createSlotDate.value = date;
   openDialog(slotDialog);
+}
+
+function openValidBooking(token) {
+  bookToken.value = token;
+  openDialog(bookDialog);
 }
 
 function openDialog(dialog) {

@@ -14,7 +14,7 @@ function slotRoute(app) {
   app.post("/slotDelete", slotDelete);
 
   // Book
-  app.post("slotBook", slotBook);
+  app.post("/slotBook", slotBook);
 }
 
 module.exports = slotRoute;

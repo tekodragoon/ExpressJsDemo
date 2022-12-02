@@ -30,25 +30,35 @@
               <div class="slot-info">
                 <div class="slot-info-title">
                   <span><%= slot.title %></span>
-                  <button class="btn-small">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Pro 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path fill="#ffffff" d="M495 59.6C516.9 81.47 516.9 116.9 495 138.8L182.3 451.6C170.9 462.9 156.9 471.2 141.5 475.8L20.52 511.4C14.9 513 8.827 511.5 4.687 507.3C.5466 503.2-1.002 497.1 .6506 491.5L36.23 370.5C40.76 355.1 49.09 341.1 60.44 329.7L373.2 16.97C395.1-4.897 430.5-4.897 452.4 16.97L495 59.6zM341 94.4L417.6 170.1L472.4 116.2C481.8 106.8 481.8 91.6 472.4 82.23L429.8 39.6C420.4 30.23 405.2 30.23 395.8 39.6L341 94.4zM318.4 117L83.07 352.4C75.5 359.9 69.95 369.3 66.93 379.6L39.63 472.4L132.4 445.1C142.7 442.1 152.1 436.5 159.6 428.9L394.1 193.6L318.4 117z"/></svg>
-                  </button>
-                  <div class="hidden"><%= slot.startHour %>&<%= slot.endHour %>&<%= slot.peopleLimit %>&<%= slot._id %>&<%= formatInputDate(slot.date) %></div>
+                  <% if (locals.user.role != "customer") { %>
+                    <button class="btn-small edit-slot">
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Pro 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path fill="#ffffff" d="M495 59.6C516.9 81.47 516.9 116.9 495 138.8L182.3 451.6C170.9 462.9 156.9 471.2 141.5 475.8L20.52 511.4C14.9 513 8.827 511.5 4.687 507.3C.5466 503.2-1.002 497.1 .6506 491.5L36.23 370.5C40.76 355.1 49.09 341.1 60.44 329.7L373.2 16.97C395.1-4.897 430.5-4.897 452.4 16.97L495 59.6zM341 94.4L417.6 170.1L472.4 116.2C481.8 106.8 481.8 91.6 472.4 82.23L429.8 39.6C420.4 30.23 405.2 30.23 395.8 39.6L341 94.4zM318.4 117L83.07 352.4C75.5 359.9 69.95 369.3 66.93 379.6L39.63 472.4L132.4 445.1C142.7 442.1 152.1 436.5 159.6 428.9L394.1 193.6L318.4 117z"/></svg>
+                    </button>
+                    <div class="hidden"><%= slot.startHour %>&<%= slot.endHour %>&<%= slot.peopleLimit %>&<%= slot._id %>&<%= formatInputDate(slot.date) %></div>
+                  <% } %>
+                  <% if (locals.user.role == "customer") { %>
+                    <button class="btn-small book-slot">
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="-32 0 512 512"><!--! Font Awesome Pro 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path fill="#ffffff" d="M128 0c17.7 0 32 14.3 32 32V64H288V32c0-17.7 14.3-32 32-32s32 14.3 32 32V64h48c26.5 0 48 21.5 48 48v48H0V112C0 85.5 21.5 64 48 64H96V32c0-17.7 14.3-32 32-32zM0 192H448V464c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V192zm308.8 75c-14.7-14.7-38.6-14.7-53.3 0L240.6 282l53.3 53.3 14.9-14.9c14.7-14.7 14.7-38.6 0-53.3zM146.1 376.5c-4.1 4.1-7 9.2-8.4 14.9L128.5 428c-1.4 5.5 .2 11.2 4.2 15.2s9.7 5.6 15.2 4.2l36.6-9.2c5.6-1.4 10.8-4.3 14.9-8.4l71.9-71.9L218 304.6l-71.9 71.9z"/></svg>
+                    </button>
+                    <div class="hidden"><%= slot._id %></div>
+                  <% } %> 
                 </div>
                 <div><%= slot.startHour %> - <%= slot.endHour %></div>
                 <div><%= slot.peopleLimit %> seat<%= slot.peopleLimit > 1 ? 's' : '' %></div>
               </div>
             <% } %> 
           <% }); %>
-          <div class="slots-date-actions">
-            <div>
-              <button class="slot-add-btn" id="slot-<%= i %>">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Pro 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path fill="#ffffff" d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32V224H48c-17.7 0-32 14.3-32 32s14.3 32 32 32H192V432c0 17.7 14.3 32 32 32s32-14.3 32-32V288H400c17.7 0 32-14.3 32-32s-14.3-32-32-32H256V80z"/></svg>
-              </button>
-              <span class="hidden"><%= formatInputDate(nextDate(monday, i)) %></span>
+          <% if (locals.user.role != "customer") { %>
+            <div class="slots-date-actions">
+              <div>
+                <button class="slot-add-btn" id="slot-<%= i %>">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Pro 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path fill="#ffffff" d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32V224H48c-17.7 0-32 14.3-32 32s14.3 32 32 32H192V432c0 17.7 14.3 32 32 32s32-14.3 32-32V288H400c17.7 0 32-14.3 32-32s-14.3-32-32-32H256V80z"/></svg>
+                </button>
+                <span class="hidden"><%= formatInputDate(nextDate(monday, i)) %></span>
+              </div>
             </div>
+            <% } %> 
           </div>
-        </div>
       </div>
     <% } %> 
   </div>
@@ -94,6 +104,14 @@
       <input type="hidden" name="_id" id="slot-delete-token">
       <button class="btn" id="cancel-delete" type="button">Cancel</button>
       <button class="btn" id="valid-delete" type="submit">Valid</button>
+    </form>
+  </dialog>
+  <dialog class="dialog" id="book-slot-dialog">
+    <form action="/slotBook" method="post">
+      <div>Book this training?</div>
+      <input type="hidden" name="_id" id="book-token">
+      <button class="btn" id="cancel-book" type="button">Cancel</button>
+      <button class="btn" id="valid-book" type="submit">Valid</button>
     </form>
   </dialog>
 </body>

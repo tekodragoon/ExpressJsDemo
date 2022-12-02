@@ -207,42 +207,56 @@ async function slotDelete(req, res) {
 }
 
 async function slotBook(req, res) {
-  if (req.role !== "customer") {
-    return res.json("unauthorized");
+  if (req.user.role !== "customer") {
+    req.flash("error", "Unauthorized");
+    return res.redirect("back");
   }
   try {
+    if (!req.body._id) {
+      req.flash("error", "id missing");
+      return res.redirect("back");
+    }
+
     const models = req.app.get("models");
-    const slot = await models.Slot.findById(req.body.slot);
+    const slot = await models.Slot.findById(req.body._id);
 
     if (slot.customers.lenght >= slot.peopleLimit) {
-      return res.json("No spot left for this spot");
+      req.flash("error", "No spot left for this training");
+      return res.redirect("back");
     }
 
-    const customer = await models.Customer.findById(req.body.customer).populate(
+    const customer = await models.Customer.findOne({user: req.user._id}).populate(
       "subscriptions"
     );
-
-    let isSubscribed = false;
-    for (const subscription of customer.subscriptions) {
-      if (
-        subscription.startDate <= slot.date &&
-        subscription.endDate >= slot.date
-      ) {
-        isSubscribed = true;
-      }
+    if (!customer) {
+      req.flash("error", "Customer not found");
+      return res.redirect("back");
     }
+
+    let isSubscribed = true;
+    // for (const subscription of customer.subscriptions) {
+    //   if (
+    //     subscription.startDate <= slot.date &&
+    //     subscription.endDate >= slot.date
+    //   ) {
+    //     isSubscribed = true;
+    //   }
+    // }
 
     if (isSubscribed) {
       slot.customers.push(customer._id);
       await slot.save();
       customer.slots.push(slot._id);
       await customer.save();
-      return res.json("Successfully booked");
+      req.flash("info", "Successfully booked");
+      return res.redirect("back");
     } else {
-      return res.json("Customer has no valid subscription for this date");
+      req.flash("error", "No valid subscription\n for this date");
+      return res.redirect("back");
     }
   } catch (error) {
-    return res.json(error.message);
+    req.flash("error", error.message);
+    return res.redirect("back");
   }
 }
 
