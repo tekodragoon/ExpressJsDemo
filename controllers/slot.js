@@ -226,7 +226,7 @@ async function slotBook(req, res) {
       return res.redirect("back");
     }
 
-    if (slot.customers.lenght >= slot.peopleLimit) {
+    if (slot.customers.length >= slot.peopleLimit) {
       req.flash("error", "No spot left for this training");
       return res.redirect("back");
     }
