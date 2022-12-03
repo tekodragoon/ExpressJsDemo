@@ -3,7 +3,7 @@ const { addDays, today } = require("../utils/utils");
 async function slotGet(req, res) {
   try {
     const Slot = req.app.get("models").Slot;
-    const MySlots = await Slot.find().populate("coach").populate("customers");
+    const MySlots = await Slot.find();
     if (!MySlots) {
       req.flash("error", "Can't find slots");
       return res.redirect("back");
