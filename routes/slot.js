@@ -1,4 +1,11 @@
-const { slotCreate, slotGet, slotUpdate, slotDelete, slotBook } = require("../controllers/slot");
+const {
+  slotCreate,
+  slotGet,
+  slotUpdate,
+  slotDelete,
+  slotBook,
+  slotUnbook,
+} = require("../controllers/slot");
 
 function slotRoute(app) {
   // Create
@@ -15,6 +22,9 @@ function slotRoute(app) {
 
   // Book
   app.post("/slotBook", slotBook);
+
+  // Unbbok
+  app.post("/slotUnbook", slotUnbook);
 }
 
 module.exports = slotRoute;

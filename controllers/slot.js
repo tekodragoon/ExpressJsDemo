@@ -1,4 +1,3 @@
-const { models } = require("mongoose");
 const { addDays, today } = require("../utils/utils");
 
 async function slotGet(req, res) {
@@ -11,16 +10,18 @@ async function slotGet(req, res) {
     }
     let currentDate = today();
     if (req.query.date) {
-      let year = req.query.date.substring(0,4);
-      let month = req.query.date.substring(4,6);
+      let year = req.query.date.substring(0, 4);
+      let month = req.query.date.substring(4, 6);
       let day = req.query.date.substring(6);
       currentDate.setFullYear(year, month, day);
     } else {
-      currentDate.setDate(currentDate.getDate() - (currentDate.getDay() + 6) % 7);
+      currentDate.setDate(
+        currentDate.getDate() - ((currentDate.getDay() + 6) % 7)
+      );
     }
     let friday = addDays(currentDate, 4);
     friday.setHours(23, 0, 0, 0);
-    let cb = v => v.date >= currentDate && v.date <= friday;
+    let cb = (v) => v.date >= currentDate && v.date <= friday;
     const remains = MySlots.filter(cb);
     return res.render("slots.ejs", {
       user: req.user,
@@ -42,7 +43,7 @@ async function slotCreate(req, res) {
   try {
     if (!req.body.title) {
       req.flash("error", "Title field is missing");
-    return res.redirect("back");
+      return res.redirect("back");
     }
     if (!req.body.startHour || !req.body.startMin) {
       req.flash("error", "Time fields are missing");
@@ -61,7 +62,7 @@ async function slotCreate(req, res) {
       return res.redirect("back");
     }
     const models = req.app.get("models");
-    let coach = await models.Coach.findOne({user: req.user._id});
+    let coach = await models.Coach.findOne({ user: req.user._id });
     if (!coach) {
       req.flash("error", "Coach not found");
       return res.redirect("back");
@@ -110,7 +111,7 @@ async function slotUpdate(req, res) {
     }
     if (!req.body.title) {
       req.flash("error", "Title field is missing");
-    return res.redirect("back");
+      return res.redirect("back");
     }
     if (!req.body.startHour || !req.body.startMin) {
       req.flash("error", "Time fields are missing");
@@ -157,7 +158,7 @@ async function slotUpdate(req, res) {
       SlotToModify.peopleLimit = req.body.peopleLimit;
       modify = true;
     }
-    
+
     if (modify) {
       await SlotToModify.save();
       req.flash("info", "Slot successfully modified");
@@ -220,15 +221,19 @@ async function slotBook(req, res) {
 
     const models = req.app.get("models");
     const slot = await models.Slot.findById(req.body._id);
+    if (!slot) {
+      req.flash("error", "Slot not found");
+      return res.redirect("back");
+    }
 
     if (slot.customers.lenght >= slot.peopleLimit) {
       req.flash("error", "No spot left for this training");
       return res.redirect("back");
     }
 
-    const customer = await models.Customer.findOne({user: req.user._id}).populate(
-      "subscriptions"
-    );
+    const customer = await models.Customer.findOne({
+      user: req.user._id,
+    }).populate("subscriptions");
     if (!customer) {
       req.flash("error", "Customer not found");
       return res.redirect("back");
@@ -261,10 +266,58 @@ async function slotBook(req, res) {
   }
 }
 
+async function slotUnbook(req, res) {
+  if (req.user.role !== "customer") {
+    req.flash("error", "Unauthorized");
+    return res.redirect("back");
+  }
+  try {
+    if (!req.body._id) {
+      req.flash("error", "id missing");
+      return res.redirect("back");
+    }
+
+    const models = req.app.get("models");
+    const slot = await models.Slot.findById(req.body._id);
+    if (!slot) {
+      req.flash("error", "Slot not found");
+      return res.redirect("back");
+    }
+
+    const customer = await models.Customer.findOne({ user: req.user._id });
+    if (!customer) {
+      req.flash("error", "Customer not found");
+      return res.redirect("back");
+    }
+
+    let sIndex = slot.customers.indexOf(customer._id);
+    slot.customers.splice(sIndex, 1);
+
+    let cIndex = customer.slots.indexOf(slot._id);
+    customer.slots.splice(cIndex, 1);
+
+    await slot.save();
+    await customer.save();
+
+    req.flash("info", "Successfully unbooked");
+    return res.redirect("back");
+  } catch (error) {
+    req.flash("error", error.message);
+    return res.redirect("back");
+  }
+}
+
 function isAuthorized(role) {
   if (role === "manager") return true;
   if (role === "coach") return true;
   return false;
 }
 
-module.exports = { slotGet, slotCreate, slotUpdate, slotDelete, slotBook };
+module.exports = {
+  slotGet,
+  slotCreate,
+  slotUpdate,
+  slotDelete,
+  slotBook,
+  slotUnbook,
+};

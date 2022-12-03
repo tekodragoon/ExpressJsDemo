@@ -28,9 +28,12 @@ const deleteToken = document.querySelector("#slot-delete-token");
 const cancelDelBtn = document.querySelector("#cancel-delete");
 
 const bookButtons = document.querySelectorAll(".book-slot");
+const unbookButtons = document.querySelectorAll(".unbook-slot");
 const bookDialog = document.querySelector("#book-slot-dialog");
 const bookToken = document.querySelector("#book-token");
 const cancelBook = document.querySelector("#cancel-book");
+const bookForm = document.querySelector("#book-form");
+const bookMessage = document.querySelector("#book-message");
 
 // REGISTER
 
@@ -124,7 +127,14 @@ for (let i = 0; i < editButtons.length; i++) {
 for (let i = 0; i < bookButtons.length; i++) {
   bookButtons[i].addEventListener("click", () => {
     let token = bookButtons[i].nextElementSibling.textContent;
-    openValidBooking(token);
+    openValidBooking(token, true);
+  })
+}
+
+for(let i = 0; i < unbookButtons.length; i++) {
+  unbookButtons[i].addEventListener("click", () => {
+    let token = unbookButtons[i].nextElementSibling.textContent;
+    openValidBooking(token, false);
   })
 }
 
@@ -184,8 +194,15 @@ function openAddSlotDialog(date) {
   openDialog(slotDialog);
 }
 
-function openValidBooking(token) {
+function openValidBooking(token, book) {
   bookToken.value = token;
+  if (book) {
+    bookForm.action = "/slotBook";
+    bookMessage.textContent = "Book this training?";
+  } else {
+    bookForm.action = "/slotUnbook";
+    bookMessage.textContent = "Unbook this training?";
+  }
   openDialog(bookDialog);
 }
 
