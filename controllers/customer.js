@@ -49,7 +49,7 @@ async function customerCreate(req, res) {
 
     const customer = await new models.Customer({
       user: newUser._id,
-      subcriptions: [],
+      subscriptions: [],
       level: "beginner"
     }).save();
 
