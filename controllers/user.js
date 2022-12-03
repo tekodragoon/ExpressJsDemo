@@ -23,6 +23,10 @@ async function userGet(req, res) {
     if (user.role === "coach") {
       const Coach = req.app.get("models").Coach;
       const coach = await Coach.findOne({ user: user._id });
+      if (!coach) {
+        req.flash("error", "Coach data not found");
+        return res.redirect("back");
+      }
       return res.render("user.ejs", {
         user: req.user,
         myUser: user,
@@ -33,6 +37,10 @@ async function userGet(req, res) {
     if (user.role === "customer") {
       const Customer = req.app.get("models").Customer;
       const customer = await Customer.findOne({ user: user._id });
+      if (!customer) {
+        req.flash("error", "Customer data not found");
+        return res.redirect("back");
+      }
       return res.render("user.ejs", {
         user: req.user,
         myUser: user,
@@ -155,10 +163,10 @@ async function userDelete(req, res) {
 }
 
 async function userUpdate(req, res) {
-  // if (req.user.role !== "manager") {
-  //   req.flash("error", "Unauthorized");
-  //   return res.redirect("back");
-  // }
+  if (req.user.role !== "manager") {
+    req.flash("error", "Unauthorized");
+    return res.redirect("back");
+  }
   try {
     if (!req.body._id) {
       req.flash("error", "Id missing");
@@ -287,6 +295,7 @@ async function userUpdateRole(req, res) {
           req.flash("error", "Coach not found");
           return res.redirect("back");
         }
+        await UserToModify.updateOne({$unset: {coachId: ""}});
         await coachToDelete.remove();
       }
       if (UserToModify.role == "customer") {
@@ -296,25 +305,30 @@ async function userUpdateRole(req, res) {
           req.flash("error", "Customer not found");
           return res.redirect("back");
         }
+        await UserToModify.updateOne({$unset: {customerId: ""}});
         await customerToDelete.remove();
       }
       UserToModify.role = req.body.role;
       if (UserToModify.role == "coach") {
         const coach = req.app.get("models").Coach;
-        await new coach({
+        const newCoach = await new coach({
           user: UserToModify._id,
           bio: "No bio for this coach",
           discipline: "Multisport",
           slots: [],
         }).save();
+        UserToModify.coachId = newCoach._id;
+        await UserToModify.save();
       }
       if (UserToModify.role == "customer") {
         const customer = req.app.get("models").Customer;
-        await new customer({
+        const newCustomer = await new customer({
           user: UserToModify._id,
           subcriptions: [],
           level: "beginner",
         }).save();
+        UserToModify.customerId = newCustomer._id;
+        await UserToModify.save();
       }
       modify = true;
     }

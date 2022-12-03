@@ -1,4 +1,3 @@
-// const { models } = require("mongoose");
 const encryptPassword = require("../utils/encryptPassword");
 const { errorMessage } = require("../utils/utils");
 
@@ -46,12 +45,15 @@ async function coachCreate(req, res) {
       login: req.body.login
     }).save();
 
-    await new models.Coach({
+    const coach = await new models.Coach({
       user: newUser._id,
       bio: "No bio for this coach",
       discipline: "Multisport",
       slots: []
     }).save();
+
+    newUser.coachId = coach._id;
+    await newUser.save();
 
     req.flash("info", "Coach Successfully created");
     return res.redirect("back");
@@ -60,73 +62,5 @@ async function coachCreate(req, res) {
     return res.redirect("back");
   }
 }
-
-/*
-async function coachGet(req, res) {
-  try {
-    const Coach = req.app.get("models").Coach;
-    let MyCoachs;
-    if (req.query.discipline) {
-      MyCoachs = await Coach.find({
-        discipline : req.query.discipline
-      }).populate("user");
-    } else {
-      MyCoachs = await Coach.find().populate("user");
-    }
-    return res.json(MyCoachs);
-  } catch (error) {
-    return res.json(error.message);
-  }
-}
-
-async function coachUpdate(req, res) {
-  if (req.role !== "manager") {
-    return res.json("unauthorized");
-  }
-  try {
-    if (!req.body._id || !req.body.toModify) {
-      return res.json("_id or toModify missing");
-    }
-    const Coach = req.app.get("models").Coach;
-    const coachToModify = await Coach.findById(req.body._id);
-    if (!coachToModify) {
-      return res.json("coach not found");
-    }
-    const KeysToModify = Object.keys(req.body.toModify);
-    for (const key of KeysToModify) {
-      coachToModify[key] = req.body.toModify[key];
-    }
-    await coachToModify.save();
-    return res.json(coachToModify);
-  } catch (error) {
-    return res.json(error.message);
-  }
-}
-
-async function coachDelete(req, res) {
-  if (req.role !== "manager") {
-    return res.json("unauthorized");
-  }
-  try {
-    if (!req.body._id) {
-      return res.json("_id missing");
-    }
-    const Coach = req.app.get("models").Coach;
-    const coachToDelete = await Coach.findById(req.body._id);
-    if (!coachToDelete) {
-      return res.json("coach not found");
-    }
-    const UserToDelete = await models.User.findById(coachToDelete.user);
-    if (!UserToDelete) {
-      return res.json("User not found");
-    }
-    await UserToDelete.remove();
-    await coachToDelete.remove();
-    return res.json("Successfully deleted");
-  } catch (error) {
-    return res.json(error.message);
-  }
-}
-*/
 
 module.exports = { coachCreate };
