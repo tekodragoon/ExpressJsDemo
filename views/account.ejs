@@ -3,7 +3,7 @@
 <%- include("_head", {documentTitle: "account" }); %>
 <body>
   <%- include("_nav", {currentUser: locals.user}); %>
-  <%- include("_formatDate") %>
+  <%- include("_utils") %>
   <% if (messages.info) { %>
     <div class="info flash"> <%= messages.info %> </div>
   <% } %>
