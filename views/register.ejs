@@ -3,9 +3,7 @@
 <%- include("_head", {documentTitle: "register"}); %>
 <body>
 <%- include("_nav"); %>
-<% if (messages.error) { %>
-  <div class="error flash"> <%= messages.error %> </div>
-<% } %>
+<%- include("_flash") %>
 <h1>Register</h1>
 
 <form class="util-form" action="/register" method="post" id="register-form" novalidate>

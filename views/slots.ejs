@@ -4,12 +4,7 @@
 <body>
   <%- include("_nav", {currentUser: locals.user}); %>
   <%- include("_utils"); %>
-  <% if (messages.info) { %>
-    <div class="info flash"> <%= messages.info %> </div>
-  <% } %>
-  <% if (messages.error) { %>
-    <div class="error flash"> <%= messages.error %> </div>
-  <% } %>
+  <%- include("_flash") %>
   <h1>Slots</h1>
   <div class="slots-top-actions">
     <div class="slot-top-btn">

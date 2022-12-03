@@ -1,15 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
   <%- include("_head", {documentTitle: "Users List" }); %>
-<body>
+  <body>
+  <%- include("_utils") %>
   <%- include("_nav", {currentUser: locals.user}); %>
+  <%- include("_flash") %>
   <h1>Users List</h1>
-  <% if (messages.info) { %>
-    <div class="info flash"> <%= messages.info %> </div>
-  <% } %>
-  <% if (messages.error) { %>
-    <div class="error flash"> <%= messages.error %> </div>
-  <% } %>
   <dialog class="dialog" id="valid-delete-dialog">
     <form action="/userDelete" method="post">
       <div>Are you sure?</div>
@@ -95,7 +91,6 @@
       </tr>
     </thead>
     <tbody>
-      <% include("_utils") %>
       <% locals.users.forEach((user) => { %>
         <tr>
           <td class="list-table-body-item"><%= user.lastName %> </td>

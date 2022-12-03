@@ -3,9 +3,7 @@
 <%- include("_head", {documentTitle: "login" }); %>
 <body>
 <%- include("_nav"); %>
-<% if (messages.error) { %>
-  <div class="error flash"> <%= messages.error %> </div>
-<% } %>
+<%- include("_flash") %>
 <h1>Login</h1>
 
 <form class="util-form" action="/login" method="post">
