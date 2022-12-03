@@ -1,4 +1,3 @@
-const queryString = require("querystring");
 const encryptPassword = require("../utils/encryptPassword");
 
 async function registerGet(req, res) {
@@ -29,13 +28,12 @@ async function registerPost(req, res) {
     const models = req.app.get("models");
 
     const alreadyExist = await models.User.findOne({login: req.body.login});
-    console.log(alreadyExist);
     if (alreadyExist) {
       req.flash("error", "login already used");
       return res.redirect("back");
     }
 
-    const NewUser = await new models.User({
+    const newUser = await new models.User({
       firstName: req.body.firstName,
       lastName: req.body.lastName,
       token,
@@ -45,16 +43,18 @@ async function registerPost(req, res) {
       login: req.body.login,
     }).save();
 
-    await new models.Customer({
-      user: NewUser._id,
+    const customer = await new models.Customer({
+      user: newUser._id,
       subcriptions: [],
       level: "beginner"
     }).save();
-
+    newUser.customerId = customer._id;
+    await newUser.save();
     
     return res.redirect("/login");
   } catch (error) {
-    return res.json(error.message);
+    req.flash("error", error.message);
+    return res.redirect("back");
   }
 }
 
