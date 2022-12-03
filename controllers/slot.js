@@ -29,7 +29,8 @@ async function slotGet(req, res) {
       friday: friday,
     });
   } catch (error) {
-    return res.json(error.message);
+    req.flash("error", error.message);
+    return res.redirect("back");
   }
 }
 
