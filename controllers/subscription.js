@@ -2,11 +2,18 @@ const { models } = require("mongoose");
 
 async function subscribeNow(req, res) {
   if (!req.user) {
-    req.flash("error", "User not found");
-    return res.redirect("/");
+    req.flash("error", "You must be logged in");
+    return res.redirect("/login");
+  }
+  const Customer = req.app.get("models").Customer;
+  const customer = await Customer.findById(req.user.customerId);
+  if (!customer) {
+    req.flash("error", "Customer not found");
+    return res.redirect("back");
   }
   return res.render("subscribe.ejs", {
-    user: req.user
+    user: req.user,
+    customer: customer
   });
 }
 
