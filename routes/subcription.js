@@ -1,4 +1,10 @@
-const { subscriptionCreate, subscriptionGet, subscriptionUpdate, subscriptionDelete } = require("../controllers/subscription");
+const {
+  subscriptionCreate,
+  subscriptionGet,
+  subscriptionUpdate,
+  subscriptionDelete,
+  subscribeNow,
+} = require("../controllers/subscription");
 
 function subscriptionRoute(app) {
   // Create
@@ -6,6 +12,9 @@ function subscriptionRoute(app) {
 
   // Read
   app.get("/subscriptions", subscriptionGet);
+
+  // Subscribe
+  app.get("/subscribe", subscribeNow);
 
   // Update
   app.post("/subscriptionUpdate", subscriptionUpdate);
