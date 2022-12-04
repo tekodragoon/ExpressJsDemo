@@ -6,5 +6,23 @@
   <%- include("_utils"); %>
   <%- include("_flash") %>
   <h1>Subscriptions</h1>
+  <% if (isActive(customer.subscriptions) == "Active") { %>
+    <div class="customer-message">
+      <% let activeSub = activeSubscription(customer.subscriptions) %>
+      <% if (activeSub != null) { %>
+        Your subscription end on <%= nextStringDate(activeSub, 0) %>.
+      <% }  else { %>
+        Something's wrong. Contact administator.
+      <% } %>
+    </div>
+  <% } else { %>
+    <div class="customer-message">
+      You have no active subscription.
+    </div>
+  <% } %>
+  <div class="customer-message">
+    Add new subscription
+    <button class="btn">Subscribe</button>
+  </div>
 </body>
 </html>

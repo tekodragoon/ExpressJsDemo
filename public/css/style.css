@@ -201,7 +201,7 @@ legend {
 
 .customer-message {
   width: fit-content;
-  margin: auto;
+  margin: 1rem auto;
   border-color: hsl(0, 0%, 45%);
   border-width: 2px 1px;
   border-style: solid;
