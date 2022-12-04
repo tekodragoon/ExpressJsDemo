@@ -99,6 +99,22 @@ app.use("/user", (req, res, next) => {
   next();
 })
 
+app.use("/slots", (req, res, next) => {
+  if (!req.user) {
+    req.flash("error", "Unauthorized");
+    return res.redirect("/");
+  }
+  next();
+})
+
+app.use("/account", (req, res, next) => {
+  if (!req.user) {
+    req.flash("error", "Unauthorized");
+    return res.redirect("/");
+  }
+  next();
+})
+
 userRoute(app);
 customerRoute(app);
 coachRoute(app);
