@@ -89,8 +89,8 @@ passport.use(
 
 app.use("/user", (req, res, next) => {
   if (!req.user) {
-    req.flash("error", "Unauthorized");
-    return res.redirect("/");
+    req.flash("error", "You must be logged in");
+    return res.redirect("/login");
   }
   if (req.user.role !== "manager") {
     req.flash("error", "Unauthorized");
@@ -101,16 +101,16 @@ app.use("/user", (req, res, next) => {
 
 app.use("/slots", (req, res, next) => {
   if (!req.user) {
-    req.flash("error", "Unauthorized");
-    return res.redirect("/");
+    req.flash("error", "You must be logged in");
+    return res.redirect("/login");
   }
   next();
 })
 
 app.use("/account", (req, res, next) => {
   if (!req.user) {
-    req.flash("error", "Unauthorized");
-    return res.redirect("/");
+    req.flash("error", "You must be logged in");
+    return res.redirect("/login");
   }
   next();
 })
