@@ -2,7 +2,7 @@ const { coachCreate } = require("../controllers/coach");
 
 function coachRoute(app) {
   // Create
-  app.post("/coachCreate", coachCreate);
+  app.post("/user/coachCreate", coachCreate);
 
   // Read
   //app.get("/coaches", coachGet);

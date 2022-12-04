@@ -100,10 +100,10 @@ roleSelector.addEventListener("change", () => {
       createUserForm.action = "/user/create";
       break;
     case "coach":
-      createUserForm.action = "/coachCreate";
+      createUserForm.action = "/user/coachCreate";
       break;
     case "customer":
-      createUserForm.action = "/customerCreate";
+      createUserForm.action = "/user/customerCreate";
       break;
   }
   if (roleSelector.validity.valid) {

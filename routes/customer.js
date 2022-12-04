@@ -2,7 +2,7 @@ const { customerCreate } = require("../controllers/customer");
 
 function customerRoute(app) {
   // Create
-  app.post("/customerCreate", customerCreate);
+  app.post("/user/customerCreate", customerCreate);
 
   // Read
   // app.get("/customers", customerGet);
