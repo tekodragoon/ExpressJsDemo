@@ -39,6 +39,11 @@
       <div class="btn">
         <a href="/user?id=<%= user._id %>">Modify</a>
       </div>
+      <% if (isActive(customer.subscriptions) == "Not active") { %>
+        <div class="btn">
+          <a href="#">Subscribe Now</a>
+        </div>
+      <% } %> 
     </div>
   <% } else { %>
     <p class="user-info-error">Something wrong. Try to login again or contact support.</p>
