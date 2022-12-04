@@ -7,7 +7,7 @@
   <%- include("_flash") %>
   <h1>Users List</h1>
   <dialog class="dialog" id="valid-delete-dialog">
-    <form action="/userDelete" method="post">
+    <form action="/user/delete" method="post">
       <div>Are you sure?</div>
       <input type="hidden" name="_id" id="delete-token">
       <button class="btn" id="cancel-delete" type="button">Cancel</button>
@@ -63,7 +63,7 @@
     </form>
   </dialog>
   <dialog class="formDialog" id="role-switch-dialog">
-    <form class="util-form" action="/userUpdateRole" method="post">
+    <form class="util-form" action="/user/updateRole" method="post">
       <fieldset>
         <legend>User Role</legend>
         <input type="hidden" name="_id" id="switch-token">
@@ -107,7 +107,7 @@
           </td>
           <td class="list-table-body-item">
             <div class="btn">
-              <a href="/user?id=<%= user.id %>">Edit</a>
+              <a href="/user/show?id=<%= user.id %>">Edit</a>
             </div>
             <button class="btn delete" >Delete</button>
           </td>

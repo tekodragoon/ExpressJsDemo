@@ -147,7 +147,7 @@ async function userDelete(req, res) {
         req.flash("error", "Coach not found");
         return res.redirect("back");
       }
-      await coachToDelete.remove();
+      await coachToDelete.deleteOne();
     }
     if (UserToDelete.role == "customer") {
       const Customer = req.app.get("models").Customer;
@@ -158,9 +158,9 @@ async function userDelete(req, res) {
         req.flash("error", "Customer not found");
         return res.redirect("back");
       }
-      await customerToDelete.remove();
+      await customerToDelete.deleteOne();
     }
-    await UserToDelete.remove();
+    await UserToDelete.deleteOne();
     let userType = capitalize(UserToDelete.role);
     req.flash("info", `${userType} Successfully deleted`);
     return res.redirect("back");
@@ -270,7 +270,7 @@ async function userUpdate(req, res) {
     return res.redirect(req.body.referer);
   } catch (error) {
     req.flash("error", error.message);
-    return res.redirect("/users");
+    return res.redirect("/user/showall");
   }
 }
 
@@ -304,7 +304,7 @@ async function userUpdateRole(req, res) {
           return res.redirect("back");
         }
         await UserToModify.updateOne({$unset: {coachId: ""}});
-        await coachToDelete.remove();
+        await coachToDelete.deleteOne();
       }
       if (UserToModify.role == "customer") {
         const customer = req.app.get("models").Customer;
@@ -314,7 +314,7 @@ async function userUpdateRole(req, res) {
           return res.redirect("back");
         }
         await UserToModify.updateOne({$unset: {customerId: ""}});
-        await customerToDelete.remove();
+        await customerToDelete.deleteOne();
       }
       UserToModify.role = req.body.role;
       if (UserToModify.role == "coach") {
@@ -344,10 +344,10 @@ async function userUpdateRole(req, res) {
       await UserToModify.save();
       req.flash("info", "User Role Successfully modified");
     }
-    return res.redirect("/users");
+    return res.redirect("/user/showall");
   } catch (error) {
     req.flash("error", error.message);
-    return res.redirect("/users");
+    return res.redirect("/user/showall");
   }
 }
 

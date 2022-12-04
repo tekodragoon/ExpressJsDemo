@@ -6,7 +6,7 @@
   <%- include("_utils") %>
   <%- include("_flash") %>
   <h1>Edit User's Information</h1>
-  <form class="util-form" action="/userUpdate" method="post" novalidate id="user-form">
+  <form class="util-form" action="/user/update" method="post" novalidate id="user-form">
     <fieldset>
       <legend>user information</legend>
       <input type="hidden" name="_id" value="<%= myUser._id %>">

@@ -97,7 +97,7 @@ roleSelector.addEventListener("change", () => {
   }
   switch (roleSelector.value) {
     case "manager":
-      createUserForm.action = "/userCreate";
+      createUserForm.action = "/user/create";
       break;
     case "coach":
       createUserForm.action = "/coachCreate";

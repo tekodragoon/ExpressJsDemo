@@ -87,6 +87,18 @@ passport.use(
 
 //TODO: create auth middleware
 
+app.use("/user", (req, res, next) => {
+  if (!req.user) {
+    req.flash("error", "Unauthorized");
+    return res.redirect("/");
+  }
+  if (req.user.role !== "manager") {
+    req.flash("error", "Unauthorized");
+    return res.redirect("back");
+  }
+  next();
+})
+
 userRoute(app);
 customerRoute(app);
 coachRoute(app);

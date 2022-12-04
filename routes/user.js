@@ -10,17 +10,17 @@ const {
 
 function userRoute(app) {
   // Create
-  app.post("/userCreate", userCreate);
+  app.post("/user/create", userCreate);
   // Read
-  app.get("/users", usersGet);
+  app.get("/user/showall", usersGet);
   // Read Single
-  app.get("/user", userGet);
+  app.get("/user/show", userGet);
   // Update
-  app.post("/userUpdate", userUpdate);
+  app.post("/user/update", userUpdate);
   // Update Role
-  app.post("/userUpdateRole", userUpdateRole);
+  app.post("/user/updateRole", userUpdateRole);
   // Delete
-  app.post("/userDelete", userDelete);
+  app.post("/user/delete", userDelete);
   // Account
   app.get("/account", userAccount);
 }
