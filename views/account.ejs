@@ -32,6 +32,9 @@
         <div class="user-info-item">
           <span>Level : </span><%= customer.level %>
         </div>
+        <div class="user-info-item">
+          <span>Subscriptions : </span><%= isActive(customer.subscriptions) %> 
+        </div>
       <% } %>
       <div class="btn">
         <a href="/user?id=<%= user._id %>">Modify</a>

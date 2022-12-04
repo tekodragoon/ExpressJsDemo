@@ -83,4 +83,16 @@
   d.setHours(0, 0, 0, 0);
   return d;
 }
-%> 
+%>
+
+<% isActive = function(subscriptions) {
+  let curDate = today();
+  let active = false;
+  for (let i = 0; i < subscriptions.length; i++) {
+    if (subscriptions[i].startDate <= curDate && subscriptions[i].endDate >= curDate) {
+      active = true;
+    }
+  }
+  return active ? "Active" : "Not active";
+} 
+%>
