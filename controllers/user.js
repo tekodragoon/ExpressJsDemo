@@ -2,6 +2,10 @@ const encryptPassword = require("../utils/encryptPassword");
 const { errorMessage, capitalize } = require("../utils/utils");
 
 async function usersGet(req, res) {
+  if (req.user.role !== "manager") {
+    req.flash("error", "Unauthorized");
+    return res.redirect("back");
+  }
   try {
     const User = req.app.get("models").User;
     const MyUsers = await User.find();
@@ -13,6 +17,10 @@ async function usersGet(req, res) {
 }
 
 async function userGet(req, res) {
+  if (req.user.role !== "manager") {
+    req.flash("error", "Unauthorized");
+    return res.redirect("back");
+  }
   try {
     const User = req.app.get("models").User;
     const user = await User.findById(req.query.id);
