@@ -11,6 +11,7 @@ const MongoStore = require("connect-mongo");
 
 const models = require("./models");
 const getRoleMiddleware = require("./utils/getRoleMiddleware");
+const utils = require("./utils/utils");
 
 const dbUrl = process.env.DB_URL;
 mongoose
@@ -94,8 +95,15 @@ slotRoute(app);
 loginRoute(app);
 registerRoute(app);
 
-app.get("/", (req, res) => {
+app.get("/", async (req, res) => {
   if (req.isAuthenticated()) {
+    if (req.user.role == "customer") {
+      const customer = await models.Customer.findById(req.user.customerId);
+      return res.render("index.ejs", {
+        user: req.user,
+        customer: customer
+      });
+    }
     return res.render("index.ejs", {
       user: req.user,
     });

@@ -3,17 +3,26 @@
 <%- include("_head", {documentTitle: "home" }); %>
 <body>
   <%- include("_nav", {currentUser: locals.user}); %>
-  <% if (messages.info) { %>
-    <div class="info flash"> <%= messages.info %> </div>
-  <% } %>
-  <% if (messages.error) { %>
-    <div class="error flash"> <%= messages.error %> </div>
-  <% } %>
+  <%- include("_utils"); %> 
+  <%- include("_flash") %>
   <% if (locals.user) { %>
     <h1>Hello <%= user.firstName %></h1>
+    
+    <% if (locals.user.role == "customer") { %>
+      <% if (locals.customer.subscriptions.length == 0) { %>
+        <div class="customer-message">
+          <div>You have no active subscriptions</div>
+          <div>Get a subscription now <a href="#">here</a></div>
+        </div>
+      <% } else { %>
+        <!-- TODO: show current subscription -->
+      <% } %>
+    <% } %> 
   <% } %>
+
   <% if (locals.name) { %>
     <h1>Hello <%= name %></h1>
   <% } %>
+
 </body>
 </html>
