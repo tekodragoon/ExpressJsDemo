@@ -31,8 +31,47 @@
       <% btnClass = "man" %>
     <% } %>
     <%= infoMsg %>
-    <button class="btn <%= btnClass %>"><%= btnCaption %></button>
+    <button class="btn <%= btnClass %>" id="manage-sub"><%= btnCaption %></button>
   </div>
-
+  <dialog class="formDialog" id="subscribe-dialog">
+    <form class="util-form" action="/subscriptionCreate" method="post" id="sub-form" novalidate>
+      <input type="hidden" name="customer" id="token">
+      <fieldset>
+        <legend>Subscription date</legend>
+        <label for="startDate">Start Date</label>
+        <input type="date" name="startDate" id="start-date" required>
+        <div class="error-field" aria-live="polite" id="strdt-err-fld"></div>
+        <select name="duration" id="duration" required>
+          <option disabled selected value="">Choose a duration</option>
+          <option value="7">One Week</option>
+          <option value="14">2 Weeks</option>
+          <option value="30">One Month</option>
+          <option value="60">2 Months</option>
+          <option value="90">3 Months</option>
+          <option value="180">6 Months</option>
+          <option value="365">One Year</option>
+        </select>
+        <div class="error-field" aria-live="polite" id="duration-err-fld"></div>
+      </fieldset>
+      <fieldset>
+        <legend>Payment Information</legend>
+        <select name="paymentMethod" id="payment-method" required>
+          <option disabled selected value>Choose a method</option>
+          <option value="cb">Credit Card</option>
+          <option value="paypal">Paypal</option>
+          <option value="checks">Checks</option>
+        </select>
+        <div class="error-field" aria-live="polite" id="method-err-fld"></div>
+        <label for="amountPaid">Amount</label>
+        <input type="text" name="amountPaid" id="amount-paid" disabled>
+      </fieldset>
+      <fieldset>
+        <button class="btn" type="submit">Valid Payment and Subscribe</button>
+        <button class="btn" id="cancel-sub" type="button">Cancel</button>
+        <div class="error-field" aria-live="polite" id="form-err-fld"></div>
+      </fieldset>
+    </form>
+  </dialog>
+  <script src="/js/subscribe.js" type="module"></script>
 </body>
 </html>
