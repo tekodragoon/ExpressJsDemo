@@ -239,15 +239,15 @@ async function slotBook(req, res) {
       return res.redirect("back");
     }
 
-    let isSubscribed = true;
-    // for (const subscription of customer.subscriptions) {
-    //   if (
-    //     subscription.startDate <= slot.date &&
-    //     subscription.endDate >= slot.date
-    //   ) {
-    //     isSubscribed = true;
-    //   }
-    // }
+    let isSubscribed = false;
+    for (const subscription of customer.subscriptions) {
+      if (
+        subscription.startDate <= slot.date &&
+        subscription.endDate >= slot.date
+      ) {
+        isSubscribed = true;
+      }
+    }
 
     if (isSubscribed) {
       slot.customers.push(customer._id);
