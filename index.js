@@ -126,7 +126,7 @@ registerRoute(app);
 app.get("/", async (req, res) => {
   if (req.isAuthenticated()) {
     if (req.user.role == "customer") {
-      const customer = await models.Customer.findById(req.user.customerId);
+      const customer = await models.Customer.findById(req.user.customerId).populate("subscriptions");
       return res.render("index.ejs", {
         user: req.user,
         customer: customer

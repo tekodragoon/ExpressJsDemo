@@ -15,7 +15,19 @@
           <div>Get a subscription now <a href="/subscribe">here</a></div>
         </div>
       <% } else { %>
-        <!-- TODO: show current subscription -->
+        <% for (let i = 0; i < locals.customer.subscriptions.length; i++) { %>
+          <div class="user-info">
+            <div class="user-info-item">
+              <span>Subscription n°<%=i+1%> : </span><%= subIsActive(locals.customer.subscriptions[i]) %> 
+            </div>
+            <div class="user-info-item">
+              <span>Start on : </span><%= nextStringDate(locals.customer.subscriptions[i].startDate, 0) %> 
+            </div>
+            <div class="user-info-item">
+              <span>End on : </span><%= nextStringDate(locals.customer.subscriptions[i].endDate, 0) %> 
+            </div>
+          </div>
+          <% } %> 
       <% } %>
     <% } %> 
   <% } %>

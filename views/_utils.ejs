@@ -97,6 +97,13 @@
 } 
 %>
 
+<% subIsActive = function(subscription) {
+  let curDate = today();
+  let active = subscription.startDate <= curDate && subscription.endDate >= curDate;
+  return active ? "Active" : "Not active";
+} 
+%>
+
 <% activeSubscription = function(subscriptions) {
   let curDate = today();
   for (let i = 0; i < subscriptions.length; i++) {
