@@ -101,7 +101,7 @@
   let curDate = today();
   for (let i = 0; i < subscriptions.length; i++) {
     if (subscriptions[i].startDate <= curDate && subscriptions[i].endDate >= curDate) {
-      return subscription[i];
+      return subscriptions[i];
     }
   }
   return null;

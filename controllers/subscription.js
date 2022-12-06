@@ -1,3 +1,4 @@
+const flash = require("express-flash");
 const { models } = require("mongoose");
 
 async function subscribeNow(req, res) {
@@ -6,7 +7,7 @@ async function subscribeNow(req, res) {
     return res.redirect("/login");
   }
   const Customer = req.app.get("models").Customer;
-  const customer = await Customer.findById(req.user.customerId);
+  const customer = await Customer.findById(req.user.customerId).populate("subscriptions");
   if (!customer) {
     req.flash("error", "Customer not found");
     return res.redirect("back");
@@ -31,36 +32,55 @@ async function subscriptionGet(req, res) {
 }
 
 async function subscriptionCreate(req, res) {
-  if (req.role !== "manager") {
-    return res.json("unauthorized");
-  }
   try {
     if (!req.body.customer) {
-      return res.json("No customer provided");
+      req.flash("error", "Customer missing");
+      return res.redirect("back");
+    }
+    if (!req.body.startDate) {
+      req.flash("error", "Start date missing");
+      return res.redirect("back");
+    }
+    if (!req.body.duration) {
+      req.flash("error", "Duration missing");
+      return res.redirect("back");
+    }
+    if (!req.body.paymentMethod) {
+      req.flash("error", "Payment method missing");
+      return res.redirect("back");
+    }
+    if (!req.body.amountPaid) {
+      req.flash("error", "Amount missing");
+      return res.redirect("back");
     }
     const models = req.app.get("models");
-    let startDt = new Date();
-    let endDt = new Date();
-    endDt.setDate(startDt.getDate() + 1);
-
     let customer = await models.Customer.findById(req.body.customer);
     if (!customer) {
-      return res.json("Customer not found");
+      req.flash("error", "Customer not found");
+      return res.redirect("back");
     }
-    s;
+
+    let startDt = new Date(req.body.startDate);
+    let endDt = new Date();
+    endDt.setDate(startDt.getDate() + parseInt(req.body.duration));
+    let amount = parseInt(req.body.amountPaid);
+
     const newSubscription = await new models.Subscription({
-      startDate: req.body.startDate ?? startDt,
-      endDate: req.body.endDate ?? endDt,
+      startDate: startDt,
+      endDate: endDt,
       paymentMethod: req.body.paymentMethod,
-      amountPaid: req.body.amountPaid,
+      amountPaid: amount,
       customer: req.body.customer,
     }).save();
 
     customer.subscriptions.push(newSubscription._id);
     await customer.save();
-    return res.json(newSubscription);
+
+    req.flash("info", "Subscription complete");
+    return res.redirect("back");
   } catch (error) {
-    return res.json(error.message);
+    req.flash("error", error.message);
+    return res.redirect("back");
   }
 }
 

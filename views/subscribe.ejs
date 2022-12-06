@@ -11,7 +11,7 @@
     <div class="customer-message">
       <% let activeSub = activeSubscription(customer.subscriptions) %>
       <% if (activeSub != null) { %>
-        Your subscription end on <%= nextStringDate(activeSub, 0) %>.
+        Your subscription end on <%= nextStringDate(activeSub.endDate, 0) %>.
       <% }  else { %>
         Something's wrong. Contact administator.
       <% } %>
@@ -35,7 +35,7 @@
   </div>
   <dialog class="formDialog" id="subscribe-dialog">
     <form class="util-form" action="/subscriptionCreate" method="post" id="sub-form" novalidate>
-      <input type="hidden" name="customer" id="token">
+      <input type="hidden" name="customer" id="token" value="<%= customer._id %>">
       <fieldset>
         <legend>Subscription date</legend>
         <label for="startDate">Start Date</label>
@@ -63,7 +63,7 @@
         </select>
         <div class="error-field" aria-live="polite" id="method-err-fld"></div>
         <label for="amountPaid">Amount</label>
-        <input type="text" name="amountPaid" id="amount-paid" disabled>
+        <input type="text" name="amountPaid" id="amount-paid" readonly>
       </fieldset>
       <fieldset>
         <button class="btn" type="submit">Valid Payment and Subscribe</button>
